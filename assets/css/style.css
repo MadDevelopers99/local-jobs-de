@@ -155,6 +155,15 @@ h1,h2,h3,h4,p{margin:0}
 .hero h1{font-size:44px;font-weight:800;line-height:1.15;margin-bottom:10px}
 .hero h1 span{color:#7ee6a8}
 .hero p{font-size:16px;opacity:.9;margin-bottom:26px}
+
+.country-trigger{
+  display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);
+  color:#fff;padding:8px 14px;border-radius:999px;font-size:13.5px;font-weight:600;margin-bottom:16px;
+}
+.country-trigger:hover{background:rgba(255,255,255,.22)}
+.country-trigger .flag{font-size:16px;line-height:1}
+.country-trigger .chev{opacity:.85}
+
 .search-bar{
   background:#fff;border-radius:14px;padding:10px;display:flex;gap:8px;box-shadow:var(--shadow-lg);
   flex-wrap:wrap;
@@ -343,6 +352,25 @@ input[type=range]{width:100%;accent-color:var(--primary)}
 .divider-or{display:flex;align-items:center;gap:10px;color:var(--text-faint);font-size:12px;margin:14px 0}
 .divider-or::before,.divider-or::after{content:'';flex:1;height:1px;background:var(--border)}
 .modal-note{text-align:center;font-size:12.5px;color:var(--text-muted);margin-top:14px;display:flex;align-items:center;justify-content:center;gap:6px}
+
+/* ---------- country selector dialog ---------- */
+.country-search{
+  width:100%;padding:11px 13px;border:1px solid var(--border-strong);border-radius:9px;outline:none;font-size:14.5px;
+}
+.country-search:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light)}
+.country-list{max-height:360px;overflow-y:auto}
+.country-row{
+  display:flex;align-items:center;gap:12px;width:100%;padding:10px 10px;border:none;background:none;border-radius:9px;
+  font-size:14.5px;color:var(--text);text-align:left;
+}
+.country-row:hover{background:#f5f7f6}
+.country-row.selected{background:var(--primary-light);color:var(--primary-dark);font-weight:700}
+.country-row .name{flex:1}
+.country-row svg{color:var(--primary);flex-shrink:0}
+
+/* flag-icons sizing (real flag images, not emoji — Windows doesn't render flag emoji) */
+.fi{width:22px !important;height:16px !important;border-radius:3px;box-shadow:0 0 0 1px rgba(0,0,0,.1);flex-shrink:0;vertical-align:middle}
+.country-trigger .fi{width:18px !important;height:13px !important}
 
 /* ---------- form ---------- */
 .form-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:26px;max-width:560px;margin:0 auto}

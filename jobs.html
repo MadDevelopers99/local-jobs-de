@@ -6,6 +6,7 @@
 <title>Jobsuche – LocalJobs.de</title>
 <link rel="icon" href="assets/img/logo-icon.svg">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7/css/flag-icons.min.css">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="no-bottom-pad">
@@ -94,7 +95,7 @@
 
       <div>
         <div class="results-toolbar">
-          <strong>324 Jobs gefunden</strong>
+          <strong id="resultsCount">324 Jobs gefunden</strong><span id="resultsCountry"></span>
           <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
             <select class="select-inline">
               <option>Sortieren: Relevanz</option>
@@ -241,7 +242,17 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="assets/js/maps.js"></script>
+<script src="assets/js/countries.js"></script>
 <script src="assets/js/main.js"></script>
+<script>
+  (function () {
+    const landCode = new URLSearchParams(location.search).get('land');
+    const country = landCode && LJ_COUNTRIES.find(c => c.code === landCode);
+    if (country) {
+      document.getElementById('resultsCountry').innerHTML = ' in ' + ljFlagHtml(country.code) + ' ' + country.name;
+    }
+  })();
+</script>
 <script>
   document.getElementById('filterToggleMobile')?.addEventListener('click', () => {
     const panel = document.getElementById('filterPanel');
