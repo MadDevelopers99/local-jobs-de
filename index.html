@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LocalJobs.de – Finde deinen Job in München</title>
 <link rel="icon" href="assets/img/logo-icon.svg">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -167,12 +168,8 @@
     </div>
 
     <div style="margin-top:24px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);height:280px;position:relative">
-      <img src="assets/img/map-bg.svg" alt="Karte München" style="width:100%;height:100%;object-fit:cover">
-      <div class="map-pin" style="top:38%;left:34%"><div class="dot">23</div></div>
-      <div class="map-pin" style="top:52%;left:52%"><div class="dot">11</div></div>
-      <div class="map-pin" style="top:64%;left:38%"><div class="dot">9</div></div>
-      <div class="map-pin" style="top:30%;left:60%"><div class="dot">13</div></div>
-      <a href="jobs.html" class="btn btn-outline btn-sm" style="position:absolute;bottom:14px;right:14px;background:#fff">Karte / Liste</a>
+      <div id="home-map" class="leaflet-map-box"></div>
+      <a href="jobs.html" class="btn btn-outline btn-sm" style="position:absolute;bottom:14px;right:14px;background:#fff;z-index:401">Karte / Liste</a>
     </div>
   </div>
 </section>
@@ -238,6 +235,20 @@
   </a>
 </nav>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="assets/js/maps.js"></script>
 <script src="assets/js/main.js"></script>
+<script>
+  ljCreateMap('home-map', {
+    center: [48.1351, 11.5820],
+    zoom: 12,
+    markers: [
+      { lat: 48.1400, lng: 11.5500, count: 23 },
+      { lat: 48.1350, lng: 11.5800, count: 11 },
+      { lat: 48.1200, lng: 11.5700, count: 9 },
+      { lat: 48.1450, lng: 11.6000, count: 13 },
+    ],
+  });
+</script>
 </body>
 </html>

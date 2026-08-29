@@ -409,30 +409,29 @@ input[type=range]{width:100%;accent-color:var(--primary)}
 .stat-row div strong{display:block;font-size:19px;font-weight:800}
 .stat-row div span{font-size:12.5px;color:var(--text-muted)}
 
-/* ---------- map view ---------- */
+/* ---------- map view (Leaflet / OpenStreetMap) ---------- */
 .map-shell{position:relative;height:calc(100vh - var(--header-h) - 90px);min-height:420px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border)}
-.map-shell .map-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.map-controls{position:absolute;top:14px;right:14px;display:flex;flex-direction:column;gap:8px;z-index:5}
-.map-controls button{width:38px;height:38px;border-radius:9px;background:#fff;border:1px solid var(--border);box-shadow:var(--shadow-sm);font-size:18px;font-weight:700}
-.map-pin{
-  position:absolute;transform:translate(-50%,-100%);z-index:3;cursor:pointer;
-}
+.leaflet-map-box{width:100%;height:100%;background:var(--bg)}
+
+/* custom Leaflet marker icons, built from our own badge styles */
+.map-pin{cursor:pointer}
 .map-pin .dot{
   min-width:34px;height:34px;padding:0 6px;border-radius:17px;background:var(--primary);color:#fff;font-weight:800;font-size:13px;
   display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);border:2px solid #fff;
 }
-.map-pin.single .dot{border-radius:50% 50% 50% 0;transform:rotate(-45deg);width:30px;height:30px}
-.map-pin.single .dot::after{content:'';display:block;transform:rotate(45deg)}
+.map-pin.single .dot{border-radius:50% 50% 50% 0;transform:rotate(-45deg);width:30px;height:30px;min-width:0}
 .map-pin:hover .dot{background:var(--primary-dark)}
-.map-popup{
-  position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);width:230px;background:#fff;border-radius:12px;
-  box-shadow:var(--shadow-lg);padding:12px;display:none;z-index:10;
-}
-.map-pin.open .map-popup{display:block}
-.map-popup .row{display:flex;gap:10px;margin-bottom:10px}
-.map-popup .logo{width:36px;height:36px;border-radius:8px;overflow:hidden;border:1px solid var(--border);flex-shrink:0}
-.map-popup strong{font-size:13px;display:block}
-.map-popup span{font-size:11.5px;color:var(--text-muted)}
+
+/* popup content card rendered inside Leaflet's own popup chrome */
+.leaflet-popup-content-wrapper{border-radius:12px;box-shadow:var(--shadow-lg)}
+.leaflet-popup-content{margin:12px}
+.map-popup-card{width:200px}
+.map-popup-card .row{display:flex;gap:10px;margin-bottom:10px}
+.map-popup-card .logo{width:36px;height:36px;border-radius:8px;overflow:hidden;border:1px solid var(--border);flex-shrink:0}
+.map-popup-card strong{font-size:13px;display:block}
+.map-popup-card span{font-size:11.5px;color:var(--text-muted)}
+.map-popup-card .meta-line{display:block;margin-bottom:8px;font-size:12.5px}
+
 .view-toggle{display:inline-flex;border:1px solid var(--border-strong);border-radius:9px;overflow:hidden}
 .view-toggle button{padding:8px 16px;background:#fff;border:none;font-size:13.5px;font-weight:600;color:var(--text-muted)}
 .view-toggle button.active{background:var(--primary);color:#fff}

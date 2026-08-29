@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Küchenhilfe (m/w/d) bei Restaurant Augustiner – LocalJobs.de</title>
 <link rel="icon" href="assets/img/logo-icon.svg">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -119,13 +120,9 @@
 
         <div id="panel-location" class="tab-panel">
           <div class="info-card" style="padding:0;overflow:hidden">
-            <div style="position:relative;height:260px">
-              <img src="assets/img/map-bg.svg" alt="Standort Karte" style="width:100%;height:100%;object-fit:cover">
-              <div class="map-pin single open" style="top:45%;left:50%"><div class="dot"></div></div>
-            </div>
+            <div id="job-location-map" class="leaflet-map-box" style="height:260px"></div>
             <div style="padding:18px">
               <h4 style="margin-bottom:6px">Landsberger Str. 31, 80339 München</h4>
-              <a href="#" class="map-link">Auf Karte anzeigen →</a>
             </div>
           </div>
         </div>
@@ -153,7 +150,7 @@
         <div class="info-card">
           <h4>Standort</h4>
           <p>Landsberger Str. 31<br>80339 München</p>
-          <a href="#" class="map-link">Auf Karte anzeigen →</a>
+          <a href="#panel-location" data-goto-tab="panel-location" class="map-link">Auf Karte anzeigen →</a>
         </div>
         <div class="info-card">
           <h4>Arbeitszeit</h4>
@@ -245,6 +242,18 @@
   </div>
 </div>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="assets/js/maps.js"></script>
 <script src="assets/js/main.js"></script>
+<script>
+  ljCreateMap('job-location-map', {
+    center: [48.1385, 11.5541],
+    zoom: 15,
+    markers: [
+      { lat: 48.1385, lng: 11.5541, single: true, openPopup: true, popupHtml:
+        '<div class="map-popup-card"><strong>Restaurant Augustiner</strong><span>Landsberger Str. 31, 80339 München</span></div>' },
+    ],
+  });
+</script>
 </body>
 </html>

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jobsuche – LocalJobs.de</title>
 <link rel="icon" href="assets/img/logo-icon.svg">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="no-bottom-pad">
@@ -205,30 +206,7 @@
         </div>
 
         <div data-view-panel="map" class="map-shell" style="display:none">
-          <img src="assets/img/map-bg.svg" class="map-img" alt="Karte">
-          <div class="map-controls">
-            <button aria-label="Zoom in">+</button>
-            <button aria-label="Zoom out">–</button>
-          </div>
-          <div class="map-pin" style="top:30%;left:22%"><div class="dot">9</div></div>
-          <div class="map-pin" style="top:20%;left:45%"><div class="dot">13</div></div>
-          <div class="map-pin" style="top:40%;left:60%"><div class="dot">23</div></div>
-          <div class="map-pin" style="top:55%;left:35%"><div class="dot">11</div></div>
-          <div class="map-pin" style="top:65%;left:70%">
-            <div class="dot">7</div>
-            <div class="map-popup">
-              <div class="row">
-                <div class="logo"><img src="assets/img/logo-augustiner.svg" alt=""></div>
-                <div>
-                  <strong>Küchenhilfe (m/w/d)</strong>
-                  <span>Restaurant Augustiner</span>
-                </div>
-              </div>
-              <span style="display:block;margin-bottom:8px;font-size:12.5px">5 Min · 2,1 km · <b>14,00 €/Std</b></span>
-              <a href="job-details.html" class="btn btn-primary btn-sm btn-block">Anzeigen</a>
-            </div>
-          </div>
-          <div class="map-pin" style="top:48%;left:48%"><div class="dot">18</div></div>
+          <div id="jobs-map" class="leaflet-map-box"></div>
         </div>
       </div>
     </div>
@@ -261,6 +239,8 @@
   </a>
 </nav>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="assets/js/maps.js"></script>
 <script src="assets/js/main.js"></script>
 <script>
   document.getElementById('filterToggleMobile')?.addEventListener('click', () => {
@@ -272,6 +252,31 @@
   }
   applyMobileFilterDefault();
   window.addEventListener('resize', applyMobileFilterDefault);
+
+  ljCreateMap('jobs-map', {
+    center: [48.1340, 11.5750],
+    zoom: 13,
+    markers: [
+      { lat: 48.1385, lng: 11.5541, single: true, openPopup: true, popupHtml: ljJobPopupHtml({
+        logo: 'assets/img/logo-augustiner.svg', title: 'Küchenhilfe (m/w/d)', company: 'Restaurant Augustiner',
+        meta: '5 Min · 2,1 km · <b>14,00 €/Std</b>', href: 'job-details.html' }) },
+      { lat: 48.1373, lng: 11.5799, single: true, popupHtml: ljJobPopupHtml({
+        logo: 'assets/img/logo-hofbrauhaus.svg', title: 'Küchenhilfe (m/w/d)', company: 'Hofbräuhaus München',
+        meta: '10 Min · 3,2 km · <b>15,00 €/Std</b>', href: 'job-details.html' }) },
+      { lat: 48.1300, lng: 11.5600, single: true, popupHtml: ljJobPopupHtml({
+        logo: 'assets/img/logo-eiszimmer.svg', title: 'Spüler (m/w/d)', company: 'EisZimmer',
+        meta: '12 Min · 3,6 km · <b>13,00 €/Std</b>', href: 'job-details.html' }) },
+      { lat: 48.1210, lng: 11.5850, single: true, popupHtml: ljJobPopupHtml({
+        logo: 'assets/img/logo-losteria.svg', title: 'Servicekraft (m/w/d)', company: "L'Osteria München",
+        meta: '15 Min · 4,1 km · <b>14,50 €/Std</b>', href: 'job-details.html' }) },
+      { lat: 48.1490, lng: 11.5750, single: true, popupHtml: ljJobPopupHtml({
+        logo: 'assets/img/logo-rewe.svg', title: 'Verkäufer (m/w/d)', company: 'REWE Group',
+        meta: '8 Min · 3,8 km · <b>13,50 €/Std</b>', href: 'job-details.html' }) },
+      { lat: 48.1150, lng: 11.6200, single: true, popupHtml: ljJobPopupHtml({
+        logo: 'assets/img/logo-dhl.svg', title: 'Lagerhelfer (m/w/d)', company: 'DHL Deutschland',
+        meta: '12 Min · 4,2 km · <b>15,00 €/Std</b>', href: 'job-details.html' }) },
+    ],
+  });
 </script>
 </body>
 </html>

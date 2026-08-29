@@ -41,7 +41,18 @@ document.addEventListener('DOMContentLoaded', () => {
         panels.forEach(p => p.classList.remove('active'));
         btn.classList.add('active');
         document.getElementById(btn.dataset.tab)?.classList.add('active');
+        if (window.ljRefreshMaps) setTimeout(window.ljRefreshMaps, 60);
       });
+    });
+  });
+
+  /* ---------- jump to a tab from elsewhere on the page ---------- */
+  document.querySelectorAll('[data-goto-tab]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const btn = document.querySelector('.tabs button[data-tab="' + link.dataset.gotoTab + '"]');
+      btn?.click();
+      btn?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
   });
 
@@ -166,6 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('[data-view-panel]').forEach(p => {
           p.style.display = p.dataset.viewPanel === target ? '' : 'none';
         });
+        if (window.ljRefreshMaps) setTimeout(window.ljRefreshMaps, 60);
       });
     });
   }
