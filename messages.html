@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nachrichten – LocalJobs.de</title>
+<link rel="icon" href="assets/img/logo-icon.svg">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="no-bottom-pad">
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="brand"><img src="assets/img/logo-icon.svg" alt=""> Local<span>Jobs</span>.de</a>
+    <nav class="main-nav">
+      <a href="jobs.html">Jobs finden</a>
+      <a href="company.html">Unternehmen</a>
+      <a href="employer/dashboard.html">Für Arbeitgeber</a>
+    </nav>
+    <div class="header-actions">
+      <div class="avatar-chip"><img src="assets/img/avatar-user.svg" alt="Profil"></div>
+      <button class="hamburger" aria-label="Menü"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="chat-shell">
+  <div class="chat-list">
+    <div class="chat-list-head">Nachrichten</div>
+    <div class="chat-item active" data-chat>
+      <div class="logo"><img src="assets/img/logo-augustiner.svg" alt=""></div>
+      <div class="txt">
+        <strong>Restaurant Augustiner</strong>
+        <span>Küchenhilfe (m/w/d)</span>
+      </div>
+      <span class="time">10:34</span>
+    </div>
+    <div class="chat-item" data-chat>
+      <div class="logo"><img src="assets/img/logo-rewe.svg" alt=""></div>
+      <div class="txt">
+        <strong>REWE Group</strong>
+        <span>Verkäufer (m/w/d)</span>
+      </div>
+      <span class="time">Gestern</span>
+    </div>
+    <div class="chat-item" data-chat>
+      <div class="logo"><img src="assets/img/logo-hofbrauhaus.svg" alt=""></div>
+      <div class="txt">
+        <strong>Hofbräuhaus München</strong>
+        <span>Küchenhilfe (m/w/d)</span>
+      </div>
+      <span class="time">2 Tage</span>
+    </div>
+    <div class="chat-item" data-chat>
+      <div class="logo"><img src="assets/img/logo-dhl.svg" alt=""></div>
+      <div class="txt">
+        <strong>DHL Deutschland</strong>
+        <span>Lagerhelfer (m/w/d)</span>
+      </div>
+      <span class="time">3 Tage</span>
+    </div>
+  </div>
+
+  <div class="chat-window">
+    <div class="chat-window-head">
+      <button class="icon-btn mobile-only" data-chat-back aria-label="Zurück" style="width:34px;height:34px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="logo"><img src="assets/img/logo-augustiner.svg" alt=""></div>
+      <div class="txt">
+        <strong>Restaurant Augustiner</strong>
+        <span style="font-size:12px;color:var(--text-muted)">Küchenhilfe (m/w/d)</span>
+      </div>
+    </div>
+
+    <div class="chat-messages">
+      <div class="msg in">Guten Tag Max, vielen Dank für Ihre Bewerbung. Wann hätten Sie Zeit für ein kurzes Gespräch?<div class="msg-time">10:30</div></div>
+      <div class="msg out">Hallo, vielen Dank für die Rückmeldung! Ich hätte morgen Nachmittag oder am Freitag Vormittag Zeit.<div class="msg-time">10:32</div></div>
+      <div class="msg in">Perfekt! Können wir uns dann morgen um 15:00 Uhr telefonisch besprechen?<div class="msg-time">10:32</div></div>
+      <div class="msg out">Ja, das passt. Vielen Dank!<div class="msg-time">10:34</div></div>
+    </div>
+
+    <div class="chat-input">
+      <button class="icon-btn" style="width:36px;height:36px" aria-label="Anhang">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.44 11.05-9.19 9.19a5 5 0 0 1-7.07-7.07l9.19-9.19a3.5 3.5 0 0 1 4.95 4.95l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+      </button>
+      <input type="text" placeholder="Nachricht schreiben...">
+      <button class="send" aria-label="Senden">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="#fff"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <a href="index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+    Home
+  </a>
+  <a href="jobs.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    Suche
+  </a>
+  <a href="messages.html" class="active">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    Gespräche
+  </a>
+  <a href="saved-jobs.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21 12 16l-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    Profil
+  </a>
+</nav>
+
+<script src="assets/js/main.js"></script>
+<script>
+  function applyChatMobileDefault(){
+    if (window.innerWidth <= 860) {
+      document.querySelector('.chat-window').style.display = 'none';
+    } else {
+      document.querySelector('.chat-window').style.display = 'flex';
+      document.querySelector('.chat-list').style.display = 'block';
+    }
+  }
+  applyChatMobileDefault();
+  window.addEventListener('resize', applyChatMobileDefault);
+</script>
+</body>
+</html>

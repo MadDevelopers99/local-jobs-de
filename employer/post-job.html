@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neue Stellenanzeige – LocalJobs.de</title>
+<link rel="icon" href="../assets/img/logo-icon.svg">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="no-bottom-pad">
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand"><img src="../assets/img/logo-icon.svg" alt=""> Local<span>Jobs</span>.de</a>
+    <nav class="main-nav">
+      <a href="../jobs.html">Jobs finden</a>
+      <a href="../company.html">Unternehmen</a>
+      <a href="dashboard.html" class="active">Für Arbeitgeber</a>
+    </nav>
+    <div class="header-actions">
+      <a href="dashboard.html" class="btn btn-outline btn-sm desktop-only-action">Abbrechen</a>
+      <button class="hamburger" aria-label="Menü"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main class="page-shell">
+  <div class="container" style="max-width:620px">
+    <a href="dashboard.html" class="breadcrumb-back">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="15 18 9 12 15 6"/></svg>
+      Dashboard
+    </a>
+
+    <div class="form-card">
+      <h2 style="font-size:19px;margin-bottom:20px">Neue Stellenanzeige</h2>
+
+      <div class="stepper">
+        <div class="step current"><div class="num">1</div><span class="label">Basisdaten</span></div>
+        <div class="line"></div>
+        <div class="step"><div class="num">2</div><span class="label">Beschreibung</span></div>
+        <div class="line"></div>
+        <div class="step"><div class="num">3</div><span class="label">Anforderungen</span></div>
+        <div class="line"></div>
+        <div class="step"><div class="num">4</div><span class="label">Fertig</span></div>
+      </div>
+      <div class="stepper-caption" aria-live="polite"></div>
+
+      <!-- Step 1 -->
+      <div class="form-step">
+        <div class="field-group">
+          <label>Jobtitel*</label>
+          <input type="text" value="Küchenhilfe (m/w/d)" placeholder="z. B. Küchenhilfe (m/w/d)">
+        </div>
+        <div class="field-group">
+          <label>Kategorie*</label>
+          <select>
+            <option>Gastronomie</option>
+            <option>Verkauf</option>
+            <option>Lager &amp; Logistik</option>
+            <option>Büro &amp; Admin</option>
+            <option>Handwerk</option>
+            <option>Reinigung</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Arbeitszeit*</label>
+          <select>
+            <option>Minijob</option>
+            <option>Teilzeit</option>
+            <option>Vollzeit</option>
+            <option>Aushilfe</option>
+            <option>Werkstudent</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Standort*</label>
+          <input type="text" value="München, Deutschland">
+        </div>
+        <div class="field-group">
+          <label>Gehalt (pro Stunde)*</label>
+          <input type="text" value="14,00" placeholder="€">
+        </div>
+        <button class="btn btn-primary btn-block btn-lg" data-next-step>Weiter</button>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="form-step" style="display:none">
+        <div class="field-group">
+          <label>Jobbeschreibung*</label>
+          <textarea rows="4" placeholder="Beschreibe die Tätigkeit ...">Unterstützung bei der Zubereitung von Speisen sowie Vor- und Nachbereitung des Küchenbereichs.</textarea>
+        </div>
+        <div class="field-group">
+          <label>Deine Aufgaben (eine pro Zeile)</label>
+          <textarea rows="4" placeholder="Aufgabe 1&#10;Aufgabe 2">Unterstützung bei der Zubereitung von Speisen
+Vor- und Nachbereitung der Küche
+Reinigung und Pflege der Arbeitsbereiche</textarea>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-outline btn-block" data-prev-step>Zurück</button>
+          <button class="btn btn-primary btn-block" data-next-step>Weiter</button>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="form-step" style="display:none">
+        <div class="field-group">
+          <label>Dein Profil (Anforderungen)</label>
+          <textarea rows="4" placeholder="Anforderung 1&#10;Anforderung 2">Erste Erfahrung in der Küche von Vorteil
+Zuverlässigkeit und Teamfähigkeit
+Deutschkenntnisse nicht erforderlich</textarea>
+        </div>
+        <label class="checkbox-row" style="margin-bottom:8px"><input type="checkbox" checked> Bewerbung ohne Lebenslauf erlauben</label>
+        <label class="checkbox-row"><input type="checkbox" checked> Sofort-Bewerbung aktivieren</label>
+        <div style="display:flex;gap:10px;margin-top:18px">
+          <button class="btn btn-outline btn-block" data-prev-step>Zurück</button>
+          <button class="btn btn-primary btn-block" data-next-step>Anzeige veröffentlichen</button>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="form-step" style="display:none;text-align:center;padding:20px 0">
+        <div style="width:64px;height:64px;border-radius:50%;background:var(--primary-light);display:flex;align-items:center;justify-content:center;margin:0 auto 18px">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h3 style="font-size:19px;margin-bottom:8px">Anzeige veröffentlicht!</h3>
+        <p style="color:var(--text-muted);font-size:14.5px;margin-bottom:26px">Deine Stellenanzeige „Küchenhilfe (m/w/d)" ist jetzt live und für Bewerber sichtbar.</p>
+        <div style="display:flex;gap:10px;flex-direction:column">
+          <a href="dashboard.html" class="btn btn-primary btn-block">Zum Dashboard</a>
+          <a href="../job-details.html" class="btn btn-outline btn-block">Anzeige ansehen</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

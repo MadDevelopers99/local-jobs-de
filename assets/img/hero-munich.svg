@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" preserveAspectRatio="xMidYMax slice" width="100%" height="100%">
+  <defs>
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#bfe3d0"/>
+      <stop offset="100%" stop-color="#eef8f1"/>
+    </linearGradient>
+    <linearGradient id="bldgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f3d2e"/>
+      <stop offset="100%" stop-color="#145239"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="500" fill="url(#skyGrad)"/>
+  <circle cx="770" cy="90" r="60" fill="#ffffff" opacity="0.5"/>
+
+  <!-- distant skyline -->
+  <g opacity="0.35" fill="#2f6b52">
+    <rect x="0" y="300" width="40" height="140"/>
+    <rect x="50" y="260" width="35" height="180"/>
+    <rect x="95" y="320" width="45" height="120"/>
+    <rect x="700" y="290" width="40" height="150"/>
+    <rect x="750" y="250" width="35" height="190"/>
+    <rect x="800" y="310" width="50" height="130"/>
+    <rect x="860" y="270" width="40" height="170"/>
+  </g>
+
+  <!-- Frauenkirche twin towers (Munich landmark) -->
+  <g fill="url(#bldgGrad)">
+    <rect x="380" y="160" width="46" height="230"/>
+    <path d="M380 160 L403 100 L426 160 Z"/>
+    <circle cx="403" cy="118" r="9" fill="#f4b942"/>
+    <rect x="470" y="160" width="46" height="230"/>
+    <path d="M470 160 L493 100 L516 160 Z"/>
+    <circle cx="493" cy="118" r="9" fill="#f4b942"/>
+  </g>
+
+  <!-- Neues Rathaus style building -->
+  <g fill="#1b5c42">
+    <rect x="200" y="240" width="150" height="150"/>
+    <rect x="215" y="220" width="20" height="20"/>
+    <rect x="245" y="200" width="24" height="40"/>
+    <rect x="285" y="220" width="20" height="20"/>
+    <rect x="320" y="230" width="20" height="30"/>
+    <g fill="#eef8f1">
+      <rect x="215" y="270" width="14" height="18"/>
+      <rect x="240" y="270" width="14" height="18"/>
+      <rect x="265" y="270" width="14" height="18"/>
+      <rect x="290" y="270" width="14" height="18"/>
+      <rect x="315" y="270" width="14" height="18"/>
+      <rect x="215" y="310" width="14" height="18"/>
+      <rect x="240" y="310" width="14" height="18"/>
+      <rect x="265" y="310" width="14" height="18"/>
+      <rect x="290" y="310" width="14" height="18"/>
+      <rect x="315" y="310" width="14" height="18"/>
+    </g>
+  </g>
+
+  <!-- other buildings -->
+  <g fill="#1e6b4c">
+    <rect x="540" y="260" width="90" height="130"/>
+    <rect x="640" y="290" width="70" height="100"/>
+    <rect x="120" y="290" width="70" height="100"/>
+  </g>
+
+  <!-- ground -->
+  <rect x="0" y="388" width="900" height="112" fill="#0f3d2e"/>
+
+  <!-- location pin -->
+  <g transform="translate(430,420)">
+    <path fill="#16a34a" d="M0 0c-14 0-24 10.5-24 23.5C-24 44 0 62 0 62s24-18 24-38.5C24 10.5 14 0 0 0z"/>
+    <circle cx="0" cy="22" r="9" fill="#ffffff"/>
+  </g>
+</svg>
