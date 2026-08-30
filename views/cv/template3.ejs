@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><%= cv.fullName || 'Lebenslauf' %> – Lebenslauf</title>
+<title><%= cv.fullName || 'CV' %> – CV</title>
 <link rel="icon" href="/assets/img/logo-icon.svg">
 <link rel="stylesheet" href="/assets/css/style.css">
 <style>
@@ -32,14 +32,14 @@
 <body>
 
 <div class="cv-toolbar">
-  <a href="/cv-builder.html" class="btn btn-outline btn-sm">← Zurück zum Editor</a>
-  <button onclick="window.print()" class="btn btn-primary btn-sm">Als PDF speichern</button>
+  <a href="/cv-builder.html" class="btn btn-outline btn-sm">← Back to Editor</a>
+  <button onclick="window.print()" class="btn btn-primary btn-sm">Save as PDF</button>
 </div>
 
 <div class="cv-page">
   <div class="cv-head">
     <div>
-      <h1><%= cv.fullName || 'Dein Name' %></h1>
+      <h1><%= cv.fullName || 'Your Name' %></h1>
       <% if (cv.headline) { %><div class="headline"><%= cv.headline %></div><% } %>
     </div>
     <div class="contact">
@@ -50,12 +50,12 @@
   </div>
 
   <% if (cv.summary) { %>
-    <div class="cv-row"><div class="k">Profil</div><div><%= cv.summary %></div></div>
+    <div class="cv-row"><div class="k">Profile</div><div><%= cv.summary %></div></div>
   <% } %>
 
   <% if (cv.experience.length) { %>
     <div class="cv-row">
-      <div class="k">Erfahrung</div>
+      <div class="k">Experience</div>
       <div>
         <% cv.experience.forEach(e => { %>
           <div class="cv-item">
@@ -69,7 +69,7 @@
 
   <% if (cv.education.length) { %>
     <div class="cv-row">
-      <div class="k">Ausbildung</div>
+      <div class="k">Education</div>
       <div>
         <% cv.education.forEach(e => { %>
           <div class="cv-item">
@@ -83,14 +83,14 @@
 
   <% if (cv.skills.length) { %>
     <div class="cv-row">
-      <div class="k">Fähigkeiten</div>
+      <div class="k">Skills</div>
       <div class="cv-tags"><% cv.skills.forEach(s => { %><span><%= s.name %></span><% }) %></div>
     </div>
   <% } %>
 
   <% if (cv.languages.length) { %>
     <div class="cv-row">
-      <div class="k">Sprachen</div>
+      <div class="k">Languages</div>
       <div class="cv-tags"><% cv.languages.forEach(l => { %><span><%= l.name %> (<%= l.level %>)</span><% }) %></div>
     </div>
   <% } %>

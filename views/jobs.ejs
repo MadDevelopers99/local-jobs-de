@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jobsuche – LocalJobs.de</title>
+<title>Job Search – LocalJobs.de</title>
 <link rel="icon" href="/assets/img/logo-icon.svg">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7/css/flag-icons.min.css">
@@ -18,7 +18,7 @@
     <input type="hidden" name="land" id="countryCodeInput" value="<%= filters.land %>">
     <div class="field">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" name="q" value="<%= filters.q %>" placeholder="Jobtitel oder Stichwort">
+      <input type="text" name="q" value="<%= filters.q %>" placeholder="Job title or keyword">
     </div>
     <div class="divider"></div>
     <button type="button" class="country-trigger" id="countryTrigger" style="color:var(--text);background:none;border:1px solid var(--border-strong);margin:0">
@@ -29,13 +29,13 @@
     <div class="divider"></div>
     <div class="field" style="max-width:190px">
       <select name="category">
-        <option value="">Alle Kategorien</option>
+        <option value="">All Categories</option>
         <% JOB_CATEGORIES.forEach(cat => { %>
           <option value="<%= cat %>" <%= filters.category === cat ? 'selected' : '' %>><%= cat %></option>
         <% }) %>
       </select>
     </div>
-    <button type="submit" class="btn btn-outline btn-sm" style="flex-shrink:0">Suchen</button>
+    <button type="submit" class="btn btn-outline btn-sm" style="flex-shrink:0">Search</button>
     <button type="button" class="btn btn-outline btn-sm" id="filterToggleMobile" style="flex-shrink:0">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="20" y2="12"/><line x1="12" y1="18" x2="20" y2="18"/><circle cx="6" cy="12" r="1.5" fill="currentColor"/><circle cx="9" cy="18" r="1.5" fill="currentColor"/></svg>
       Filter
@@ -50,10 +50,10 @@
       <aside class="filter-panel" id="filterPanel">
         <div class="filter-group" style="display:flex;align-items:center;justify-content:space-between">
           <h4 style="margin:0">Filter</h4>
-          <a href="/jobs.html" style="font-size:12.5px;color:var(--primary);font-weight:700">Zurücksetzen</a>
+          <a href="/jobs.html" style="font-size:12.5px;color:var(--primary);font-weight:700">Reset</a>
         </div>
         <div class="filter-group">
-          <h4>Unternehmensart</h4>
+          <h4>Company Type</h4>
           <% COMPANY_TYPES.forEach(ct => { %>
             <a href="/jobs.html?<%= new URLSearchParams({ ...filters, type: filters.type === ct.value ? '' : ct.value }).toString() %>"
                class="checkbox-row" style="text-decoration:none;<%= filters.type === ct.value ? 'font-weight:700;color:var(--primary)' : '' %>">
@@ -66,18 +66,18 @@
 
       <div>
         <div class="results-toolbar">
-          <div><strong id="resultsCount"><%= jobs.length %> Jobs gefunden</strong><span id="resultsCountry"><%= filters.land ? ' in ' + countryName(filters.land) : '' %></span></div>
+          <div><strong id="resultsCount"><%= jobs.length %> job<%= jobs.length === 1 ? '' : 's' %> found</strong><span id="resultsCountry"><%= filters.land ? ' in ' + countryName(filters.land) : '' %></span></div>
           <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
             <form method="get" action="/jobs.html" id="sortForm">
               <% Object.entries(filters).forEach(([k, v]) => { if (k !== 'sort' && v) { %><input type="hidden" name="<%= k %>" value="<%= v %>"><% } }) %>
               <select class="select-inline" name="sort" onchange="document.getElementById('sortForm').submit()">
-                <option value="" <%= filters.sort === '' ? 'selected' : '' %>>Sortieren: Neueste</option>
-                <option value="salary" <%= filters.sort === 'salary' ? 'selected' : '' %>>Gehalt: hoch → niedrig</option>
+                <option value="" <%= filters.sort === '' ? 'selected' : '' %>>Sort: Newest</option>
+                <option value="salary" <%= filters.sort === 'salary' ? 'selected' : '' %>>Salary: high → low</option>
               </select>
             </form>
             <div class="view-toggle">
-              <button type="button" class="active" data-view="list">Liste</button>
-              <button type="button" data-view="map">Karte</button>
+              <button type="button" class="active" data-view="list">List</button>
+              <button type="button" data-view="map">Map</button>
             </div>
           </div>
         </div>
@@ -85,7 +85,7 @@
         <% if (jobs.length === 0) { %>
           <div class="empty-state">
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <p>Keine Jobs für diese Suche gefunden.</p>
+            <p>No jobs found for this search.</p>
           </div>
         <% } else { %>
           <div data-view-panel="list" class="job-list">

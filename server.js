@@ -49,7 +49,7 @@ app.use('/', require('./routes/cv'));
 app.use(express.static(path.join(__dirname, 'static-pages')));
 
 app.use((req, res) => {
-  res.status(404).send('Seite nicht gefunden — <a href="/">zurück zur Startseite</a>');
+  res.status(404).send('Page not found — <a href="/">back to homepage</a>');
 });
 
 const PORT = process.env.PORT || 8793;

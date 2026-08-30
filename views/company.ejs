@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +14,7 @@
 <div style="max-width:1240px;margin:0 auto;padding:0 24px">
   <a href="/jobs.html" class="breadcrumb-back" style="margin-top:16px">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="15 18 9 12 15 6"/></svg>
-    Zurück
+    Back
   </a>
   <div class="company-cover" style="background:<%= avatarColorFor(company.name) %>;display:flex;align-items:center;justify-content:center">
     <span style="font-size:64px;font-weight:800;color:rgba(255,255,255,.35)"><%= initialsFor(company.name) %></span>
@@ -27,12 +27,12 @@
         <div class="company-meta">
           <span class="badge badge-gray"><%= companyTypeLabel(company.companyType) %></span>
           <span><%= countryName(company.country) %></span>
-          <% if (company.totalEmployees) { %><span><%= company.totalEmployees %> Mitarbeiter</span><% } %>
+          <% if (company.totalEmployees) { %><span><%= company.totalEmployees %> employees</span><% } %>
         </div>
       </div>
     </div>
     <div style="display:flex;gap:10px;padding-bottom:16px">
-      <a href="/jobs.html?q=<%= encodeURIComponent(company.name) %>" class="btn btn-primary">Alle Jobs ansehen</a>
+      <a href="/jobs.html?q=<%= encodeURIComponent(company.name) %>" class="btn btn-primary">View All Jobs</a>
     </div>
   </div>
 </div>
@@ -42,22 +42,22 @@
     <div class="detail-grid">
       <div>
         <div data-tabs class="tabs">
-          <button class="active" data-tab="c-about">Über uns</button>
+          <button class="active" data-tab="c-about">About Us</button>
           <button data-tab="c-jobs">Jobs (<%= company.jobs.length %>)</button>
         </div>
 
         <div id="c-about" class="tab-panel active">
           <div class="stat-row">
-            <% if (company.foundedDate) { %><div><strong><%= company.foundedDate.getFullYear() %></strong><span>Gegründet</span></div><% } %>
-            <% if (company.totalEmployees) { %><div><strong><%= company.totalEmployees %></strong><span>Mitarbeiter</span></div><% } %>
-            <div><strong><%= company.jobs.length %></strong><span>Offene Stellen</span></div>
+            <% if (company.foundedDate) { %><div><strong><%= company.foundedDate.getFullYear() %></strong><span>Founded</span></div><% } %>
+            <% if (company.totalEmployees) { %><div><strong><%= company.totalEmployees %></strong><span>Employees</span></div><% } %>
+            <div><strong><%= company.jobs.length %></strong><span>Open Positions</span></div>
             <% if (company.website) { %><div><strong><a href="<%= company.website %>" target="_blank" class="map-link" style="font-size:15px"><%= company.website.replace(/^https?:\/\//, '') %></a></strong><span>Website</span></div><% } %>
           </div>
         </div>
 
         <div id="c-jobs" class="tab-panel">
           <% if (company.jobs.length === 0) { %>
-            <p style="color:var(--text-muted)">Aktuell keine offenen Stellen.</p>
+            <p style="color:var(--text-muted)">No open positions at the moment.</p>
           <% } else { %>
             <div class="job-list">
               <% company.jobs.forEach(job => { %>
@@ -70,16 +70,16 @@
 
       <aside>
         <div class="info-card">
-          <h4>Kontakt</h4>
+          <h4>Contact</h4>
           <p><%= company.email %><br><%= company.contact %></p>
           <% if (company.website) { %><a href="<%= company.website %>" target="_blank" class="map-link"><%= company.website.replace(/^https?:\/\//, '') %> →</a><% } %>
         </div>
         <div class="info-card">
-          <h4>Unternehmensart</h4>
+          <h4>Company Type</h4>
           <p><%= companyTypeLabel(company.companyType) %></p>
         </div>
         <div class="info-card">
-          <h4>Land</h4>
+          <h4>Country</h4>
           <p><%= countryName(company.country) %></p>
         </div>
       </aside>

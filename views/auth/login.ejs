@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anmelden – LocalJobs.de</title>
+<title>Log In – LocalJobs.de</title>
 <link rel="icon" href="/assets/img/logo-icon.svg">
 <link rel="stylesheet" href="/assets/css/style.css">
 </head>
@@ -14,8 +14,8 @@
 <main class="page-shell">
   <div class="container" style="max-width:440px">
     <div class="form-card">
-      <h2 style="font-size:20px;margin-bottom:4px">Willkommen zurück</h2>
-      <p style="color:var(--text-muted);font-size:14px;margin-bottom:20px">Melde dich an, um Jobs zu speichern, zu bewerben oder Stellen zu inserieren.</p>
+      <h2 style="font-size:20px;margin-bottom:4px">Welcome Back</h2>
+      <p style="color:var(--text-muted);font-size:14px;margin-bottom:20px">Log in to save jobs, apply, or post job listings.</p>
 
       <% if (error) { %>
         <div class="badge badge-yellow" style="display:block;padding:10px 14px;margin-bottom:16px;font-weight:600"><%= error %></div>
@@ -24,18 +24,18 @@
       <form method="post" action="/login.html">
         <input type="hidden" name="next" value="<%= next %>">
         <div class="field-group">
-          <label>E-Mail*</label>
+          <label>Email*</label>
           <input type="email" name="email" required value="<%= email %>">
         </div>
         <div class="field-group">
-          <label>Passwort*</label>
+          <label>Password*</label>
           <input type="password" name="password" required>
         </div>
-        <button type="submit" class="btn btn-primary btn-block btn-lg">Anmelden</button>
+        <button type="submit" class="btn btn-primary btn-block btn-lg">Log In</button>
       </form>
 
       <div class="form-foot">
-        Noch kein Konto? <a href="/register.html<%= next ? '?next=' + encodeURIComponent(next) : '' %>" style="color:var(--primary);font-weight:700">Jetzt registrieren</a>
+        Don't have an account? <a href="/register.html<%= next ? '?next=' + encodeURIComponent(next) : '' %>" style="color:var(--primary);font-weight:700">Sign Up</a>
       </div>
     </div>
   </div>

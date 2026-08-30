@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Arbeitgeber Dashboard – LocalJobs.de</title>
+<title>Employer Dashboard – LocalJobs.de</title>
 <link rel="icon" href="/assets/img/logo-icon.svg">
 <link rel="stylesheet" href="/assets/css/style.css">
 </head>
@@ -27,60 +27,60 @@
     <nav class="dash-nav">
       <a href="/employer/dashboard.html?companyId=<%= company.id %>" class="active">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
-        Übersicht
+        Overview
       </a>
       <a href="/employer/post-job.html?companyId=<%= company.id %>">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-        Neue Anzeige
+        New Listing
       </a>
       <a href="/add-business.html">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M8 2v4"/><path d="M16 2v4"/><path d="M3 10h18"/></svg>
-        Weiteres Unternehmen
+        Add Another Business
       </a>
     </nav>
   </aside>
 
   <div class="dash-main">
     <div class="dash-topbar">
-      <h1>Übersicht — <%= company.name %></h1>
-      <a href="/employer/post-job.html?companyId=<%= company.id %>" class="btn btn-primary">+ Neue Anzeige schalten</a>
+      <h1>Overview — <%= company.name %></h1>
+      <a href="/employer/post-job.html?companyId=<%= company.id %>" class="btn btn-primary">+ Post New Listing</a>
     </div>
 
     <div class="stat-cards">
-      <div class="stat-card"><span>Aktive Anzeigen</span><strong><%= activeJobs %></strong></div>
-      <div class="stat-card"><span>Bewerbungen gesamt</span><strong><%= totalApplications %></strong></div>
+      <div class="stat-card"><span>Active Listings</span><strong><%= activeJobs %></strong></div>
+      <div class="stat-card"><span>Total Applications</span><strong><%= totalApplications %></strong></div>
     </div>
 
     <div class="detail-grid" style="grid-template-columns:1fr 1fr">
       <div class="panel">
-        <h3>Letzte Bewerbungen</h3>
+        <h3>Recent Applications</h3>
         <% if (recentApplications.length === 0) { %>
-          <p style="color:var(--text-muted);font-size:13.5px">Noch keine Bewerbungen.</p>
+          <p style="color:var(--text-muted);font-size:13.5px">No applications yet.</p>
         <% } else { %>
           <% recentApplications.forEach(app => { %>
             <div class="applicant-row">
               <div class="avatar"><img src="/assets/img/avatar-user.svg" alt=""></div>
               <div class="txt"><strong><%= app.applicant.firstName %> <%= app.applicant.lastName %></strong><span><%= app.job.title %></span></div>
-              <a href="/employer/applicants.html?jobId=<%= app.jobId %>" class="btn btn-outline btn-sm">Ansehen</a>
+              <a href="/employer/applicants.html?jobId=<%= app.jobId %>" class="btn btn-outline btn-sm">View</a>
             </div>
           <% }) %>
         <% } %>
       </div>
 
       <div class="panel">
-        <h3>Stellenanzeigen (<%= jobs.length %>)</h3>
+        <h3>Job Listings (<%= jobs.length %>)</h3>
         <% if (jobs.length === 0) { %>
-          <p style="color:var(--text-muted);font-size:13.5px">Noch keine Stellenanzeigen. <a href="/employer/post-job.html?companyId=<%= company.id %>" style="color:var(--primary);font-weight:700">Jetzt erste Anzeige schalten →</a></p>
+          <p style="color:var(--text-muted);font-size:13.5px">No job listings yet. <a href="/employer/post-job.html?companyId=<%= company.id %>" style="color:var(--primary);font-weight:700">Post your first listing →</a></p>
         <% } else { %>
           <div class="table-scroll">
             <table class="data-table">
-              <thead><tr><th>Titel</th><th>Bewerbungen</th><th></th></tr></thead>
+              <thead><tr><th>Title</th><th>Applications</th><th></th></tr></thead>
               <tbody>
                 <% jobs.forEach(job => { %>
                   <tr>
                     <td><a href="/job-details.html?id=<%= job.id %>"><%= job.title %></a></td>
                     <td><%= job._count.applications %></td>
-                    <td><a href="/employer/applicants.html?jobId=<%= job.id %>" class="btn btn-outline btn-sm">Bewerber</a></td>
+                    <td><a href="/employer/applicants.html?jobId=<%= job.id %>" class="btn btn-outline btn-sm">Applicants</a></td>
                   </tr>
                 <% }) %>
               </tbody>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Registrieren – LocalJobs.de</title>
+<title>Sign Up – LocalJobs.de</title>
 <link rel="icon" href="/assets/img/logo-icon.svg">
 <link rel="stylesheet" href="/assets/css/style.css">
 </head>
@@ -14,8 +14,8 @@
 <main class="page-shell">
   <div class="container" style="max-width:480px">
     <div class="form-card">
-      <h2 style="font-size:20px;margin-bottom:4px">Konto erstellen</h2>
-      <p style="color:var(--text-muted);font-size:14px;margin-bottom:20px">Finde Jobs oder poste als Arbeitgeber Stellenanzeigen.</p>
+      <h2 style="font-size:20px;margin-bottom:4px">Create an Account</h2>
+      <p style="color:var(--text-muted);font-size:14px;margin-bottom:20px">Find jobs, or post job listings as an employer.</p>
 
       <% if (error) { %>
         <div class="badge badge-yellow" style="display:block;padding:10px 14px;margin-bottom:16px;font-weight:600"><%= error %></div>
@@ -25,37 +25,37 @@
         <input type="hidden" name="next" value="<%= next %>">
         <div class="field-row">
           <div class="field-group">
-            <label>Vorname*</label>
+            <label>First Name*</label>
             <input type="text" name="firstName" required value="<%= form.firstName || '' %>">
           </div>
           <div class="field-group">
-            <label>Nachname*</label>
+            <label>Last Name*</label>
             <input type="text" name="lastName" required value="<%= form.lastName || '' %>">
           </div>
         </div>
         <div class="field-group">
-          <label>E-Mail*</label>
+          <label>Email*</label>
           <input type="email" name="email" required value="<%= form.email || '' %>">
         </div>
         <div class="field-group">
-          <label>Telefon</label>
+          <label>Phone</label>
           <input type="tel" name="phone" value="<%= form.phone || '' %>">
         </div>
         <div class="field-row">
           <div class="field-group">
-            <label>Passwort*</label>
+            <label>Password*</label>
             <input type="password" name="password" required minlength="6">
           </div>
           <div class="field-group">
-            <label>Passwort bestätigen*</label>
+            <label>Confirm Password*</label>
             <input type="password" name="passwordConfirm" required minlength="6">
           </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-block btn-lg">Registrieren</button>
+        <button type="submit" class="btn btn-primary btn-block btn-lg">Sign Up</button>
       </form>
 
       <div class="form-foot">
-        Bereits ein Konto? <a href="/login.html<%= next ? '?next=' + encodeURIComponent(next) : '' %>" style="color:var(--primary);font-weight:700">Anmelden</a>
+        Already have an account? <a href="/login.html<%= next ? '?next=' + encodeURIComponent(next) : '' %>" style="color:var(--primary);font-weight:700">Log In</a>
       </div>
     </div>
   </div>

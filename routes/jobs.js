@@ -58,7 +58,7 @@ router.get('/job-details.html', async (req, res) => {
     where: { id },
     include: { company: true, _count: { select: { applications: true } } },
   });
-  if (!job) return res.status(404).send('Stellenanzeige nicht gefunden — <a href="/jobs.html">zurück zur Jobsuche</a>');
+  if (!job) return res.status(404).send('Job listing not found — <a href="/jobs.html">back to job search</a>');
 
   const similarJobs = await prisma.job.findMany({
     where: { category: job.category, id: { not: job.id } },
@@ -84,7 +84,7 @@ router.get('/job-details.html', async (req, res) => {
 router.post('/apply.html', requireLogin, async (req, res) => {
   const jobId = parseInt(req.body.jobId, 10);
   const job = await prisma.job.findUnique({ where: { id: jobId } });
-  if (!job) return res.status(404).send('Stellenanzeige nicht gefunden.');
+  if (!job) return res.status(404).send('Job listing not found.');
 
   const cvProfile = await prisma.cvProfile.findUnique({
     where: { userId: req.currentUser.id },
@@ -120,7 +120,7 @@ router.get('/company.html', async (req, res) => {
       jobs: { orderBy: { createdAt: 'desc' }, include: { _count: { select: { applications: true } } } },
     },
   });
-  if (!company) return res.status(404).send('Unternehmen nicht gefunden — <a href="/jobs.html">zurück zur Jobsuche</a>');
+  if (!company) return res.status(404).send('Company not found — <a href="/jobs.html">back to job search</a>');
 
   res.render('company', { active: null, company, companyTypeLabel });
 });

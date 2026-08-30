@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><%= cv.fullName || 'Lebenslauf' %> – Lebenslauf</title>
+<title><%= cv.fullName || 'CV' %> – CV</title>
 <link rel="icon" href="/assets/img/logo-icon.svg">
 <link rel="stylesheet" href="/assets/css/style.css">
 <style>
@@ -36,28 +36,28 @@
 <body>
 
 <div class="cv-toolbar">
-  <a href="/cv-builder.html" class="btn btn-outline btn-sm">← Zurück zum Editor</a>
-  <button onclick="window.print()" class="btn btn-primary btn-sm">Als PDF speichern</button>
+  <a href="/cv-builder.html" class="btn btn-outline btn-sm">← Back to Editor</a>
+  <button onclick="window.print()" class="btn btn-primary btn-sm">Save as PDF</button>
 </div>
 
 <div class="cv-page">
   <aside class="cv-side">
     <div class="cv-avatar"><%= (cv.fullName || '?').trim().split(/\s+/).map(w => w[0]).slice(0,2).join('').toUpperCase() %></div>
-    <h1><%= cv.fullName || 'Dein Name' %></h1>
+    <h1><%= cv.fullName || 'Your Name' %></h1>
     <% if (cv.headline) { %><div class="headline"><%= cv.headline %></div><% } %>
 
-    <h3>Kontakt</h3>
+    <h3>Contact</h3>
     <% if (cv.phone) { %><div class="contact-line"><%= cv.phone %></div><% } %>
     <% if (cv.email) { %><div class="contact-line"><%= cv.email %></div><% } %>
     <% if (cv.address) { %><div class="contact-line"><%= cv.address %></div><% } %>
 
     <% if (cv.skills.length) { %>
-      <h3>Fähigkeiten</h3>
+      <h3>Skills</h3>
       <% cv.skills.forEach(s => { %><div class="skill-line">• <%= s.name %></div><% }) %>
     <% } %>
 
     <% if (cv.languages.length) { %>
-      <h3>Sprachen</h3>
+      <h3>Languages</h3>
       <% cv.languages.forEach(l => { %><div class="skill-line"><%= l.name %><br><span style="opacity:.7;font-size:11px"><%= l.level %></span></div><% }) %>
     <% } %>
   </aside>
@@ -66,7 +66,7 @@
     <% if (cv.summary) { %><div class="summary"><%= cv.summary %></div><% } %>
 
     <% if (cv.experience.length) { %>
-      <h3>Berufserfahrung</h3>
+      <h3>Work Experience</h3>
       <% cv.experience.forEach(e => { %>
         <div class="cv-item">
           <div class="cv-item-head"><%= e.jobTitle %></div>
@@ -78,7 +78,7 @@
     <% } %>
 
     <% if (cv.education.length) { %>
-      <h3 style="margin-top:26px">Ausbildung</h3>
+      <h3 style="margin-top:26px">Education</h3>
       <% cv.education.forEach(e => { %>
         <div class="cv-item">
           <div class="cv-item-head"><%= e.degree %></div>

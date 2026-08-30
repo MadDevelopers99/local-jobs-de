@@ -12,34 +12,34 @@ async function main() {
 
   const passwordHash = await bcrypt.hash('demo1234', 10);
   const demoOwner = await prisma.user.create({
-    data: { email: 'demo@localjobs.de', passwordHash, firstName: 'Demo', lastName: 'Arbeitgeber' },
+    data: { email: 'demo@localjobs.de', passwordHash, firstName: 'Demo', lastName: 'Employer' },
   });
 
   const companies = [
-    { name: 'Restaurant Augustiner', contact: '+49 89 123456', email: 'jobs@augustiner-demo.de', website: 'https://augustiner.de', foundedDate: new Date('1328-01-01'), totalEmployees: 120, companyType: 'PRIVATE', country: 'DE' },
-    { name: 'REWE Group', contact: '+49 89 234567', email: 'karriere@rewe-demo.de', website: 'https://rewe.de', foundedDate: new Date('1927-01-01'), totalEmployees: 5000, companyType: 'PUBLIC', country: 'DE' },
-    { name: 'DHL Deutschland', contact: '+49 89 345678', email: 'jobs@dhl-demo.de', website: 'https://dhl.de', foundedDate: new Date('1969-01-01'), totalEmployees: 8000, companyType: 'PUBLIC', country: 'DE' },
-    { name: 'Hofbräuhaus München', contact: '+49 89 456789', email: 'jobs@hofbraeuhaus-demo.de', website: 'https://hofbraeuhaus.de', foundedDate: new Date('1589-01-01'), totalEmployees: 200, companyType: 'LOCAL', country: 'DE' },
+    { name: 'Augustiner Restaurant', contact: '+49 89 123456', email: 'jobs@augustiner-demo.de', website: 'https://augustiner.de', foundedDate: new Date('1328-01-01'), totalEmployees: 120, companyType: 'PRIVATE', country: 'DE' },
+    { name: 'REWE Group', contact: '+49 89 234567', email: 'careers@rewe-demo.de', website: 'https://rewe.de', foundedDate: new Date('1927-01-01'), totalEmployees: 5000, companyType: 'PUBLIC', country: 'DE' },
+    { name: 'DHL Germany', contact: '+49 89 345678', email: 'jobs@dhl-demo.de', website: 'https://dhl.de', foundedDate: new Date('1969-01-01'), totalEmployees: 8000, companyType: 'PUBLIC', country: 'DE' },
+    { name: 'Hofbräuhaus Munich', contact: '+49 89 456789', email: 'jobs@hofbraeuhaus-demo.de', website: 'https://hofbraeuhaus.de', foundedDate: new Date('1589-01-01'), totalEmployees: 200, companyType: 'LOCAL', country: 'DE' },
     { name: 'EisZimmer', contact: '+49 89 567890', email: 'jobs@eiszimmer-demo.de', website: null, foundedDate: new Date('2015-01-01'), totalEmployees: 15, companyType: 'LOCAL', country: 'DE' },
-    { name: "L'Osteria München", contact: '+49 89 678901', email: 'jobs@losteria-demo.de', website: 'https://losteria.de', foundedDate: new Date('1999-01-01'), totalEmployees: 300, companyType: 'PRIVATE', country: 'DE' },
-    { name: 'Stadt München — Bürgerbüro', contact: '+49 89 789012', email: 'jobs@muenchen-demo.de', website: 'https://muenchen.de', foundedDate: new Date('1158-01-01'), totalEmployees: 12000, companyType: 'GOVERNMENT', country: 'DE' },
+    { name: "L'Osteria Munich", contact: '+49 89 678901', email: 'jobs@losteria-demo.de', website: 'https://losteria.de', foundedDate: new Date('1999-01-01'), totalEmployees: 300, companyType: 'PRIVATE', country: 'DE' },
+    { name: 'City of Munich — Citizens\' Office', contact: '+49 89 789012', email: 'jobs@muenchen-demo.de', website: 'https://muenchen.de', foundedDate: new Date('1158-01-01'), totalEmployees: 12000, companyType: 'GOVERNMENT', country: 'DE' },
   ];
 
   const createdCompanies = [];
   for (const c of companies) {
     createdCompanies.push(await prisma.company.create({ data: { ...c, ownerId: demoOwner.id } }));
   }
-  const [augustiner, rewe, dhl, hofbrau, eiszimmer, losteria, stadt] = createdCompanies;
+  const [augustiner, rewe, dhl, hofbrau, eiszimmer, losteria, city] = createdCompanies;
 
   const jobs = [
-    { companyId: augustiner.id, title: 'Küchenhilfe (m/w/d)', category: 'Gastronomie', employmentType: 'Minijob', country: 'DE', city: 'München', salaryMin: 14, salaryMax: 14, description: 'Unterstützung bei der Zubereitung von Speisen sowie Vor- und Nachbereitung des Küchenbereichs.', responsibilities: 'Unterstützung bei der Zubereitung von Speisen\nVor- und Nachbereitung der Küche\nReinigung und Pflege der Arbeitsbereiche', requirements: 'Erste Erfahrung in der Küche von Vorteil\nZuverlässigkeit und Teamfähigkeit\nDeutschkenntnisse nicht erforderlich' },
-    { companyId: augustiner.id, title: 'Kellner / Servicekraft (m/w/d)', category: 'Gastronomie', employmentType: 'Teilzeit', country: 'DE', city: 'München', salaryMin: 15, salaryMax: 16, description: 'Freundlicher und aufmerksamer Service für unsere Gäste im traditionsreichen Restaurant.', responsibilities: 'Bedienung der Gäste\nAufnahme von Bestellungen\nKassieren', requirements: 'Erfahrung im Service von Vorteil\nFreundliches Auftreten' },
-    { companyId: rewe.id, title: 'Verkäufer (m/w/d)', category: 'Verkauf', employmentType: 'Teilzeit', country: 'DE', city: 'München', salaryMin: 13.5, salaryMax: 13.5, description: 'Beratung und Kassieren in unserer Filiale in München.', responsibilities: 'Warenverräumung\nKundenberatung\nKassiertätigkeiten', requirements: 'Freundliches Auftreten\nErste Erfahrung im Einzelhandel von Vorteil' },
-    { companyId: dhl.id, title: 'Lagerhelfer (m/w/d)', category: 'Lager & Logistik', employmentType: 'Vollzeit', country: 'DE', city: 'München', salaryMin: 15, salaryMax: 15, description: 'Kommissionierung und Verladung von Paketen im Logistikzentrum.', responsibilities: 'Kommissionierung\nVerladung\nQualitätskontrolle', requirements: 'Körperliche Belastbarkeit\nZuverlässigkeit' },
-    { companyId: hofbrau.id, title: 'Küchenhilfe (m/w/d)', category: 'Gastronomie', employmentType: 'Teilzeit', country: 'DE', city: 'München', salaryMin: 15, salaryMax: 15, description: 'Mitarbeit in der traditionsreichen Küche des Hofbräuhauses.', responsibilities: 'Vorbereitung von Speisen\nReinigung', requirements: 'Erfahrung von Vorteil' },
-    { companyId: eiszimmer.id, title: 'Spüler (m/w/d)', category: 'Gastronomie', employmentType: 'Minijob', country: 'DE', city: 'München', salaryMin: 13, salaryMax: 13, description: 'Spülen und Reinigung der Küchenausstattung im Eiscafé.', responsibilities: 'Spülen\nReinigung der Küche', requirements: 'Keine Vorerfahrung nötig' },
-    { companyId: losteria.id, title: 'Servicekraft (m/w/d)', category: 'Gastronomie', employmentType: 'Teilzeit', country: 'DE', city: 'München', salaryMin: 14.5, salaryMax: 14.5, description: 'Service in unserem italienischen Restaurant im Herzen Münchens.', responsibilities: 'Bedienung der Gäste\nBestellaufnahme', requirements: 'Freundliches Auftreten\nTeamfähigkeit' },
-    { companyId: stadt.id, title: 'Sachbearbeiter Bürgerbüro (m/w/d)', category: 'Büro & Admin', employmentType: 'Vollzeit', country: 'DE', city: 'München', salaryMin: 18, salaryMax: 22, description: 'Bearbeitung von Anliegen der Bürger im Bürgerbüro der Stadt München.', responsibilities: 'Kundenberatung\nBearbeitung von Anträgen\nDatenpflege', requirements: 'Abgeschlossene kaufmännische Ausbildung\nGute Deutschkenntnisse' },
+    { companyId: augustiner.id, title: 'Kitchen Assistant', category: 'Food & Hospitality', employmentType: 'Mini Job', country: 'DE', city: 'Munich', salaryMin: 14, salaryMax: 14, description: 'Help prepare dishes and keep the kitchen area running smoothly, before and after service.', responsibilities: 'Help prepare dishes\nPrep and clean-up in the kitchen\nCleaning and maintaining work areas', requirements: 'Some kitchen experience preferred\nReliability and teamwork\nNo German language skills required' },
+    { companyId: augustiner.id, title: 'Server / Waitstaff', category: 'Food & Hospitality', employmentType: 'Part-Time', country: 'DE', city: 'Munich', salaryMin: 15, salaryMax: 16, description: 'Friendly, attentive service for our guests in a traditional restaurant.', responsibilities: 'Serving guests\nTaking orders\nHandling payments', requirements: 'Service experience preferred\nFriendly demeanor' },
+    { companyId: rewe.id, title: 'Sales Assistant', category: 'Retail & Sales', employmentType: 'Part-Time', country: 'DE', city: 'Munich', salaryMin: 13.5, salaryMax: 13.5, description: 'Customer advice and checkout duties at our Munich store.', responsibilities: 'Restocking shelves\nCustomer advice\nCheckout duties', requirements: 'Friendly demeanor\nSome retail experience preferred' },
+    { companyId: dhl.id, title: 'Warehouse Assistant', category: 'Warehouse & Logistics', employmentType: 'Full-Time', country: 'DE', city: 'Munich', salaryMin: 15, salaryMax: 15, description: 'Picking and loading packages at our logistics center.', responsibilities: 'Order picking\nLoading\nQuality checks', requirements: 'Physically fit\nReliability' },
+    { companyId: hofbrau.id, title: 'Kitchen Assistant', category: 'Food & Hospitality', employmentType: 'Part-Time', country: 'DE', city: 'Munich', salaryMin: 15, salaryMax: 15, description: 'Join the kitchen team at the historic Hofbräuhaus.', responsibilities: 'Preparing dishes\nCleaning', requirements: 'Experience preferred' },
+    { companyId: eiszimmer.id, title: 'Dishwasher', category: 'Food & Hospitality', employmentType: 'Mini Job', country: 'DE', city: 'Munich', salaryMin: 13, salaryMax: 13, description: 'Washing dishes and cleaning kitchen equipment at our ice cream café.', responsibilities: 'Dishwashing\nKitchen cleaning', requirements: 'No prior experience needed' },
+    { companyId: losteria.id, title: 'Server', category: 'Food & Hospitality', employmentType: 'Part-Time', country: 'DE', city: 'Munich', salaryMin: 14.5, salaryMax: 14.5, description: 'Service at our Italian restaurant in the heart of Munich.', responsibilities: 'Serving guests\nTaking orders', requirements: 'Friendly demeanor\nTeamwork' },
+    { companyId: city.id, title: 'Citizens\' Office Clerk', category: 'Office & Admin', employmentType: 'Full-Time', country: 'DE', city: 'Munich', salaryMin: 18, salaryMax: 22, description: 'Handling citizen requests at the City of Munich Citizens\' Office.', responsibilities: 'Customer advice\nProcessing applications\nData maintenance', requirements: 'Completed commercial training\nGood German language skills' },
   ];
 
   for (const j of jobs) {

@@ -1,54 +1,54 @@
-// LocalJobs.de — country selector (all ISO 3166-1 countries, German names)
+// LocalJobs.de — country selector (all ISO 3166-1 countries, English names)
 const LJ_COUNTRIES_RAW = [
-  ['AF', 'Afghanistan'], ['EG', 'Ägypten'], ['AL', 'Albanien'], ['DZ', 'Algerien'],
-  ['AD', 'Andorra'], ['AO', 'Angola'], ['AG', 'Antigua und Barbuda'], ['GQ', 'Äquatorialguinea'],
-  ['AR', 'Argentinien'], ['AM', 'Armenien'], ['AZ', 'Aserbaidschan'], ['ET', 'Äthiopien'],
-  ['AU', 'Australien'], ['BS', 'Bahamas'], ['BH', 'Bahrain'], ['BD', 'Bangladesch'],
-  ['BB', 'Barbados'], ['BY', 'Belarus'], ['BE', 'Belgien'], ['BZ', 'Belize'],
-  ['BJ', 'Benin'], ['BT', 'Bhutan'], ['BO', 'Bolivien'], ['BA', 'Bosnien und Herzegowina'],
-  ['BW', 'Botswana'], ['BR', 'Brasilien'], ['BN', 'Brunei'], ['BG', 'Bulgarien'],
+  ['AF', 'Afghanistan'], ['EG', 'Egypt'], ['AL', 'Albania'], ['DZ', 'Algeria'],
+  ['AD', 'Andorra'], ['AO', 'Angola'], ['AG', 'Antigua and Barbuda'], ['GQ', 'Equatorial Guinea'],
+  ['AR', 'Argentina'], ['AM', 'Armenia'], ['AZ', 'Azerbaijan'], ['ET', 'Ethiopia'],
+  ['AU', 'Australia'], ['BS', 'Bahamas'], ['BH', 'Bahrain'], ['BD', 'Bangladesh'],
+  ['BB', 'Barbados'], ['BY', 'Belarus'], ['BE', 'Belgium'], ['BZ', 'Belize'],
+  ['BJ', 'Benin'], ['BT', 'Bhutan'], ['BO', 'Bolivia'], ['BA', 'Bosnia and Herzegovina'],
+  ['BW', 'Botswana'], ['BR', 'Brazil'], ['BN', 'Brunei'], ['BG', 'Bulgaria'],
   ['BF', 'Burkina Faso'], ['BI', 'Burundi'], ['CL', 'Chile'], ['CN', 'China'],
-  ['CR', 'Costa Rica'], ['CI', 'Elfenbeinküste'], ['DK', 'Dänemark'], ['DE', 'Deutschland'],
-  ['DM', 'Dominica'], ['DO', 'Dominikanische Republik'], ['DJ', 'Dschibuti'], ['EC', 'Ecuador'],
-  ['SV', 'El Salvador'], ['ER', 'Eritrea'], ['EE', 'Estland'], ['SZ', 'Eswatini'],
-  ['FJ', 'Fidschi'], ['FI', 'Finnland'], ['FR', 'Frankreich'], ['GA', 'Gabun'],
-  ['GM', 'Gambia'], ['GE', 'Georgien'], ['GH', 'Ghana'], ['GD', 'Grenada'],
-  ['GR', 'Griechenland'], ['GT', 'Guatemala'], ['GN', 'Guinea'], ['GW', 'Guinea-Bissau'],
-  ['GY', 'Guyana'], ['HT', 'Haiti'], ['HN', 'Honduras'], ['IN', 'Indien'],
-  ['ID', 'Indonesien'], ['IQ', 'Irak'], ['IR', 'Iran'], ['IE', 'Irland'],
-  ['IS', 'Island'], ['IL', 'Israel'], ['IT', 'Italien'], ['JM', 'Jamaika'],
-  ['JP', 'Japan'], ['YE', 'Jemen'], ['JO', 'Jordanien'], ['KH', 'Kambodscha'],
-  ['CM', 'Kamerun'], ['CA', 'Kanada'], ['CV', 'Kap Verde'], ['KZ', 'Kasachstan'],
-  ['QA', 'Katar'], ['KE', 'Kenia'], ['KG', 'Kirgisistan'], ['KI', 'Kiribati'],
-  ['CO', 'Kolumbien'], ['KM', 'Komoren'], ['CD', 'Kongo (Demokratische Republik)'], ['CG', 'Kongo (Republik)'],
-  ['HR', 'Kroatien'], ['CU', 'Kuba'], ['KW', 'Kuwait'], ['LA', 'Laos'],
-  ['LS', 'Lesotho'], ['LV', 'Lettland'], ['LB', 'Libanon'], ['LR', 'Liberia'],
-  ['LY', 'Libyen'], ['LI', 'Liechtenstein'], ['LT', 'Litauen'], ['LU', 'Luxemburg'],
-  ['MG', 'Madagaskar'], ['MW', 'Malawi'], ['MY', 'Malaysia'], ['MV', 'Malediven'],
-  ['ML', 'Mali'], ['MT', 'Malta'], ['MA', 'Marokko'], ['MH', 'Marshallinseln'],
-  ['MR', 'Mauretanien'], ['MU', 'Mauritius'], ['MX', 'Mexiko'], ['FM', 'Mikronesien'],
-  ['MD', 'Moldau'], ['MC', 'Monaco'], ['MN', 'Mongolei'], ['ME', 'Montenegro'],
-  ['MZ', 'Mosambik'], ['MM', 'Myanmar'], ['NA', 'Namibia'], ['NR', 'Nauru'],
-  ['NP', 'Nepal'], ['NZ', 'Neuseeland'], ['NI', 'Nicaragua'], ['NL', 'Niederlande'],
-  ['NE', 'Niger'], ['NG', 'Nigeria'], ['KP', 'Nordkorea'], ['MK', 'Nordmazedonien'],
-  ['NO', 'Norwegen'], ['OM', 'Oman'], ['AT', 'Österreich'], ['TL', 'Osttimor'],
-  ['PK', 'Pakistan'], ['PW', 'Palau'], ['PS', 'Palästina'], ['PA', 'Panama'],
-  ['PG', 'Papua-Neuguinea'], ['PY', 'Paraguay'], ['PE', 'Peru'], ['PH', 'Philippinen'],
-  ['PL', 'Polen'], ['PT', 'Portugal'], ['RW', 'Ruanda'], ['RO', 'Rumänien'],
-  ['RU', 'Russland'], ['SB', 'Salomonen'], ['ZM', 'Sambia'], ['WS', 'Samoa'],
-  ['SM', 'San Marino'], ['ST', 'São Tomé und Príncipe'], ['SA', 'Saudi-Arabien'], ['SE', 'Schweden'],
-  ['CH', 'Schweiz'], ['SN', 'Senegal'], ['RS', 'Serbien'], ['SC', 'Seychellen'],
-  ['SL', 'Sierra Leone'], ['ZW', 'Simbabwe'], ['SG', 'Singapur'], ['SK', 'Slowakei'],
-  ['SI', 'Slowenien'], ['SO', 'Somalia'], ['ES', 'Spanien'], ['LK', 'Sri Lanka'],
-  ['KN', 'St. Kitts und Nevis'], ['LC', 'St. Lucia'], ['VC', 'St. Vincent und die Grenadinen'], ['ZA', 'Südafrika'],
-  ['KR', 'Südkorea'], ['SD', 'Sudan'], ['SS', 'Südsudan'], ['SR', 'Suriname'],
-  ['SY', 'Syrien'], ['TJ', 'Tadschikistan'], ['TW', 'Taiwan'], ['TZ', 'Tansania'],
-  ['TH', 'Thailand'], ['TG', 'Togo'], ['TO', 'Tonga'], ['TT', 'Trinidad und Tobago'],
-  ['TD', 'Tschad'], ['CZ', 'Tschechien'], ['TN', 'Tunesien'], ['TR', 'Türkei'],
+  ['CR', 'Costa Rica'], ['CI', "Côte d'Ivoire"], ['DK', 'Denmark'], ['DE', 'Germany'],
+  ['DM', 'Dominica'], ['DO', 'Dominican Republic'], ['DJ', 'Djibouti'], ['EC', 'Ecuador'],
+  ['SV', 'El Salvador'], ['ER', 'Eritrea'], ['EE', 'Estonia'], ['SZ', 'Eswatini'],
+  ['FJ', 'Fiji'], ['FI', 'Finland'], ['FR', 'France'], ['GA', 'Gabon'],
+  ['GM', 'Gambia'], ['GE', 'Georgia'], ['GH', 'Ghana'], ['GD', 'Grenada'],
+  ['GR', 'Greece'], ['GT', 'Guatemala'], ['GN', 'Guinea'], ['GW', 'Guinea-Bissau'],
+  ['GY', 'Guyana'], ['HT', 'Haiti'], ['HN', 'Honduras'], ['IN', 'India'],
+  ['ID', 'Indonesia'], ['IQ', 'Iraq'], ['IR', 'Iran'], ['IE', 'Ireland'],
+  ['IS', 'Iceland'], ['IL', 'Israel'], ['IT', 'Italy'], ['JM', 'Jamaica'],
+  ['JP', 'Japan'], ['YE', 'Yemen'], ['JO', 'Jordan'], ['KH', 'Cambodia'],
+  ['CM', 'Cameroon'], ['CA', 'Canada'], ['CV', 'Cape Verde'], ['KZ', 'Kazakhstan'],
+  ['QA', 'Qatar'], ['KE', 'Kenya'], ['KG', 'Kyrgyzstan'], ['KI', 'Kiribati'],
+  ['CO', 'Colombia'], ['KM', 'Comoros'], ['CD', 'Congo (Democratic Republic)'], ['CG', 'Congo (Republic)'],
+  ['HR', 'Croatia'], ['CU', 'Cuba'], ['KW', 'Kuwait'], ['LA', 'Laos'],
+  ['LS', 'Lesotho'], ['LV', 'Latvia'], ['LB', 'Lebanon'], ['LR', 'Liberia'],
+  ['LY', 'Libya'], ['LI', 'Liechtenstein'], ['LT', 'Lithuania'], ['LU', 'Luxembourg'],
+  ['MG', 'Madagascar'], ['MW', 'Malawi'], ['MY', 'Malaysia'], ['MV', 'Maldives'],
+  ['ML', 'Mali'], ['MT', 'Malta'], ['MA', 'Morocco'], ['MH', 'Marshall Islands'],
+  ['MR', 'Mauritania'], ['MU', 'Mauritius'], ['MX', 'Mexico'], ['FM', 'Micronesia'],
+  ['MD', 'Moldova'], ['MC', 'Monaco'], ['MN', 'Mongolia'], ['ME', 'Montenegro'],
+  ['MZ', 'Mozambique'], ['MM', 'Myanmar'], ['NA', 'Namibia'], ['NR', 'Nauru'],
+  ['NP', 'Nepal'], ['NZ', 'New Zealand'], ['NI', 'Nicaragua'], ['NL', 'Netherlands'],
+  ['NE', 'Niger'], ['NG', 'Nigeria'], ['KP', 'North Korea'], ['MK', 'North Macedonia'],
+  ['NO', 'Norway'], ['OM', 'Oman'], ['AT', 'Austria'], ['TL', 'Timor-Leste'],
+  ['PK', 'Pakistan'], ['PW', 'Palau'], ['PS', 'Palestine'], ['PA', 'Panama'],
+  ['PG', 'Papua New Guinea'], ['PY', 'Paraguay'], ['PE', 'Peru'], ['PH', 'Philippines'],
+  ['PL', 'Poland'], ['PT', 'Portugal'], ['RW', 'Rwanda'], ['RO', 'Romania'],
+  ['RU', 'Russia'], ['SB', 'Solomon Islands'], ['ZM', 'Zambia'], ['WS', 'Samoa'],
+  ['SM', 'San Marino'], ['ST', 'São Tomé and Príncipe'], ['SA', 'Saudi Arabia'], ['SE', 'Sweden'],
+  ['CH', 'Switzerland'], ['SN', 'Senegal'], ['RS', 'Serbia'], ['SC', 'Seychelles'],
+  ['SL', 'Sierra Leone'], ['ZW', 'Zimbabwe'], ['SG', 'Singapore'], ['SK', 'Slovakia'],
+  ['SI', 'Slovenia'], ['SO', 'Somalia'], ['ES', 'Spain'], ['LK', 'Sri Lanka'],
+  ['KN', 'St Kitts and Nevis'], ['LC', 'St Lucia'], ['VC', 'St Vincent and the Grenadines'], ['ZA', 'South Africa'],
+  ['KR', 'South Korea'], ['SD', 'Sudan'], ['SS', 'South Sudan'], ['SR', 'Suriname'],
+  ['SY', 'Syria'], ['TJ', 'Tajikistan'], ['TW', 'Taiwan'], ['TZ', 'Tanzania'],
+  ['TH', 'Thailand'], ['TG', 'Togo'], ['TO', 'Tonga'], ['TT', 'Trinidad and Tobago'],
+  ['TD', 'Chad'], ['CZ', 'Czechia'], ['TN', 'Tunisia'], ['TR', 'Turkey'],
   ['TM', 'Turkmenistan'], ['TV', 'Tuvalu'], ['UG', 'Uganda'], ['UA', 'Ukraine'],
-  ['HU', 'Ungarn'], ['UY', 'Uruguay'], ['UZ', 'Usbekistan'], ['VU', 'Vanuatu'],
-  ['VA', 'Vatikanstadt'], ['VE', 'Venezuela'], ['AE', 'Vereinigte Arabische Emirate'], ['US', 'Vereinigte Staaten'],
-  ['GB', 'Vereinigtes Königreich'], ['VN', 'Vietnam'], ['CF', 'Zentralafrikanische Republik'], ['CY', 'Zypern'],
+  ['HU', 'Hungary'], ['UY', 'Uruguay'], ['UZ', 'Uzbekistan'], ['VU', 'Vanuatu'],
+  ['VA', 'Vatican City'], ['VE', 'Venezuela'], ['AE', 'United Arab Emirates'], ['US', 'United States'],
+  ['GB', 'United Kingdom'], ['VN', 'Vietnam'], ['CF', 'Central African Republic'], ['CY', 'Cyprus'],
 ];
 
 // real flag images (not emoji) — Windows/many browsers render flag emoji as plain
@@ -59,7 +59,7 @@ function ljFlagHtml(code) {
 
 const LJ_COUNTRIES = LJ_COUNTRIES_RAW
   .map(([code, name]) => ({ code, name }))
-  .sort((a, b) => a.name.localeCompare(b.name, 'de'));
+  .sort((a, b) => a.name.localeCompare(b.name, 'en'));
 
 function ljInitCountrySelector({
   triggerId = 'countryTrigger',
@@ -95,7 +95,7 @@ function ljInitCountrySelector({
           ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>'
           : '') +
       '</button>'
-    )).join('') : '<div class="empty-state" style="padding:30px 10px">Kein Land gefunden</div>';
+    )).join('') : '<div class="empty-state" style="padding:30px 10px">No country found</div>';
 
     listEl.querySelectorAll('.country-row').forEach(row => {
       row.addEventListener('click', () => selectCountry(row.dataset.code, row.dataset.name));

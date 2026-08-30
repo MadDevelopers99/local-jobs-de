@@ -13,12 +13,12 @@ router.post('/register.html', async (req, res) => {
   const { firstName, lastName, email, phone, password, passwordConfirm, next } = req.body;
   const fail = (error) => res.render('auth/register', { active: null, error, form: req.body, next: next || '' });
 
-  if (!firstName || !lastName || !email || !password) return fail('Bitte fülle alle Pflichtfelder aus.');
-  if (password.length < 6) return fail('Das Passwort muss mindestens 6 Zeichen lang sein.');
-  if (password !== passwordConfirm) return fail('Die Passwörter stimmen nicht überein.');
+  if (!firstName || !lastName || !email || !password) return fail('Please fill in all required fields.');
+  if (password.length < 6) return fail('Password must be at least 6 characters long.');
+  if (password !== passwordConfirm) return fail('Passwords do not match.');
 
   const existing = await prisma.user.findUnique({ where: { email: email.toLowerCase().trim() } });
-  if (existing) return fail('Für diese E-Mail-Adresse existiert bereits ein Konto.');
+  if (existing) return fail('An account with this email address already exists.');
 
   const passwordHash = await bcrypt.hash(password, 10);
   const user = await prisma.user.create({
@@ -44,13 +44,13 @@ router.post('/login.html', async (req, res) => {
   const { email, password, next } = req.body;
   const fail = (error) => res.render('auth/login', { active: null, error, email: email || '', next: next || '' });
 
-  if (!email || !password) return fail('Bitte E-Mail und Passwort eingeben.');
+  if (!email || !password) return fail('Please enter email and password.');
 
   const user = await prisma.user.findUnique({ where: { email: email.toLowerCase().trim() } });
-  if (!user) return fail('E-Mail oder Passwort ist falsch.');
+  if (!user) return fail('Email or password is incorrect.');
 
   const ok = await bcrypt.compare(password, user.passwordHash);
-  if (!ok) return fail('E-Mail oder Passwort ist falsch.');
+  if (!ok) return fail('Email or password is incorrect.');
 
   req.session.userId = user.id;
   res.redirect(next && next.startsWith('/') ? next : '/');

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Unternehmen registrieren – LocalJobs.de</title>
+<title>Register a Business – LocalJobs.de</title>
 <link rel="icon" href="/assets/img/logo-icon.svg">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7/css/flag-icons.min.css">
 <link rel="stylesheet" href="/assets/css/style.css">
@@ -15,8 +15,8 @@
 <main class="page-shell">
   <div class="container" style="max-width:560px">
     <div class="form-card">
-      <h2 style="font-size:20px;margin-bottom:4px">Unternehmen registrieren</h2>
-      <p style="color:var(--text-muted);font-size:14px;margin-bottom:20px">Lege dein Unternehmensprofil an, um anschließend unbegrenzt Stellenanzeigen zu veröffentlichen.</p>
+      <h2 style="font-size:20px;margin-bottom:4px">Register a Business</h2>
+      <p style="color:var(--text-muted);font-size:14px;margin-bottom:20px">Set up your company profile so you can start posting job listings — unlimited and free.</p>
 
       <% if (error) { %>
         <div class="badge badge-yellow" style="display:block;padding:10px 14px;margin-bottom:16px;font-weight:600"><%= error %></div>
@@ -24,16 +24,16 @@
 
       <form method="post" action="/add-business.html">
         <div class="field-group">
-          <label>Firmenname*</label>
-          <input type="text" name="name" required value="<%= form.name || '' %>" placeholder="z. B. Restaurant Augustiner">
+          <label>Company Name*</label>
+          <input type="text" name="name" required value="<%= form.name || '' %>" placeholder="e.g. Augustiner Restaurant">
         </div>
         <div class="field-row">
           <div class="field-group">
-            <label>Kontakt (Telefon)*</label>
+            <label>Contact (Phone)*</label>
             <input type="tel" name="contact" required value="<%= form.contact || '' %>">
           </div>
           <div class="field-group">
-            <label>E-Mail*</label>
+            <label>Email*</label>
             <input type="email" name="email" required value="<%= form.email || '' %>">
           </div>
         </div>
@@ -43,32 +43,32 @@
         </div>
         <div class="field-row">
           <div class="field-group">
-            <label>Gründungsdatum</label>
+            <label>Founding Date</label>
             <input type="date" name="foundedDate" value="<%= form.foundedDate || '' %>">
           </div>
           <div class="field-group">
-            <label>Mitarbeiterzahl</label>
+            <label>Number of Employees</label>
             <input type="number" name="totalEmployees" min="1" value="<%= form.totalEmployees || '' %>">
           </div>
         </div>
         <div class="field-group">
-          <label>Unternehmensart*</label>
+          <label>Company Type*</label>
           <select name="companyType" required>
-            <option value="">Bitte wählen</option>
+            <option value="">Please select</option>
             <% COMPANY_TYPES.forEach(ct => { %>
               <option value="<%= ct.value %>" <%= form.companyType === ct.value ? 'selected' : '' %>><%= ct.label %></option>
             <% }) %>
           </select>
         </div>
         <div class="field-group">
-          <label>Land*</label>
+          <label>Country*</label>
           <select name="country" required>
             <% COUNTRIES.forEach(c => { %>
               <option value="<%= c.code %>" <%= (form.country || 'DE') === c.code ? 'selected' : '' %>><%= c.name %></option>
             <% }) %>
           </select>
         </div>
-        <button type="submit" class="btn btn-primary btn-block btn-lg">Unternehmen registrieren</button>
+        <button type="submit" class="btn btn-primary btn-block btn-lg">Register Business</button>
       </form>
     </div>
   </div>

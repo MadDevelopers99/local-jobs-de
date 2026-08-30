@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bewerber – <%= job.title %> – LocalJobs.de</title>
+<title>Applicants – <%= job.title %> – LocalJobs.de</title>
 <link rel="icon" href="/assets/img/logo-icon.svg">
 <link rel="stylesheet" href="/assets/css/style.css">
 </head>
@@ -21,14 +21,14 @@
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px">
       <div>
         <h1 style="font-size:20px;font-weight:800"><%= job.title %></h1>
-        <p style="color:var(--text-muted);font-size:13.5px"><%= applications.length %> Bewerber</p>
+        <p style="color:var(--text-muted);font-size:13.5px"><%= applications.length %> applicant<%= applications.length === 1 ? '' : 's' %></p>
       </div>
-      <a href="/job-details.html?id=<%= job.id %>" class="btn btn-outline btn-sm">Anzeige ansehen</a>
+      <a href="/job-details.html?id=<%= job.id %>" class="btn btn-outline btn-sm">View Listing</a>
     </div>
 
     <% if (applications.length === 0) { %>
       <div class="empty-state">
-        <p>Für diese Stelle liegen noch keine Bewerbungen vor.</p>
+        <p>No applications for this job yet.</p>
       </div>
     <% } else { %>
       <div class="panel">
@@ -38,9 +38,9 @@
             <div class="txt">
               <strong><%= app.applicant.firstName %> <%= app.applicant.lastName %></strong>
               <span><%= app.applicant.email %><% if (app.applicant.phone) { %> · <%= app.applicant.phone %><% } %></span>
-              <span style="display:block;font-size:11.5px;color:var(--text-faint)">Beworben am <%= app.createdAt.toLocaleDateString('de-DE') %></span>
+              <span style="display:block;font-size:11.5px;color:var(--text-faint)">Applied on <%= app.createdAt.toLocaleDateString('en-GB') %></span>
             </div>
-            <a href="/cv/application.html?applicationId=<%= app.id %>" class="btn btn-primary btn-sm" target="_blank">Lebenslauf ansehen</a>
+            <a href="/cv/application.html?applicationId=<%= app.id %>" class="btn btn-primary btn-sm" target="_blank">View CV</a>
           </div>
         <% }) %>
       </div>

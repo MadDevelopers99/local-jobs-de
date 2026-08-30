@@ -148,7 +148,7 @@ model CvLanguage {
   cvProfile   CvProfile @relation(fields: [cvProfileId], references: [id], onDelete: Cascade)
   cvProfileId Int
   name        String
-  level       String    @default("Gut")
+  level       String    @default("Good")
 
   @@index([cvProfileId])
 }

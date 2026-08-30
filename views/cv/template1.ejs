@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><%= cv.fullName || 'Lebenslauf' %> – Lebenslauf</title>
+<title><%= cv.fullName || 'CV' %> – CV</title>
 <link rel="icon" href="/assets/img/logo-icon.svg">
 <link rel="stylesheet" href="/assets/css/style.css">
 <style>
@@ -31,12 +31,12 @@
 <body>
 
 <div class="cv-toolbar">
-  <a href="/cv-builder.html" class="btn btn-outline btn-sm">← Zurück zum Editor</a>
-  <button onclick="window.print()" class="btn btn-primary btn-sm">Als PDF speichern</button>
+  <a href="/cv-builder.html" class="btn btn-outline btn-sm">← Back to Editor</a>
+  <button onclick="window.print()" class="btn btn-primary btn-sm">Save as PDF</button>
 </div>
 
 <div class="cv-page">
-  <div class="cv-name"><%= cv.fullName || 'Dein Name' %></div>
+  <div class="cv-name"><%= cv.fullName || 'Your Name' %></div>
   <% if (cv.headline) { %><div class="cv-headline"><%= cv.headline %></div><% } %>
   <div class="cv-contact">
     <% if (cv.phone) { %><span><%= cv.phone %></span><% } %>
@@ -46,14 +46,14 @@
 
   <% if (cv.summary) { %>
     <div class="cv-section">
-      <h2>Über mich</h2>
+      <h2>About Me</h2>
       <p style="font-family:system-ui,sans-serif;font-size:13.5px;line-height:1.6;color:#374151"><%= cv.summary %></p>
     </div>
   <% } %>
 
   <% if (cv.experience.length) { %>
     <div class="cv-section">
-      <h2>Berufserfahrung</h2>
+      <h2>Work Experience</h2>
       <% cv.experience.forEach(e => { %>
         <div class="cv-item">
           <div class="cv-item-head"><span><%= e.jobTitle %></span><span style="font-weight:400;color:#6b7280;font-size:12.5px"><%= e.period %></span></div>
@@ -66,7 +66,7 @@
 
   <% if (cv.education.length) { %>
     <div class="cv-section">
-      <h2>Ausbildung</h2>
+      <h2>Education</h2>
       <% cv.education.forEach(e => { %>
         <div class="cv-item">
           <div class="cv-item-head"><span><%= e.degree %></span><span style="font-weight:400;color:#6b7280;font-size:12.5px"><%= e.period %></span></div>
@@ -79,14 +79,14 @@
 
   <% if (cv.skills.length) { %>
     <div class="cv-section">
-      <h2>Fähigkeiten</h2>
+      <h2>Skills</h2>
       <div class="cv-tags"><% cv.skills.forEach(s => { %><span><%= s.name %></span><% }) %></div>
     </div>
   <% } %>
 
   <% if (cv.languages.length) { %>
     <div class="cv-section">
-      <h2>Sprachen</h2>
+      <h2>Languages</h2>
       <div class="cv-tags"><% cv.languages.forEach(l => { %><span><%= l.name %> — <%= l.level %></span><% }) %></div>
     </div>
   <% } %>

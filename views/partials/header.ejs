@@ -2,23 +2,23 @@
   <div class="container">
     <a href="/" class="brand"><img src="/assets/img/logo-icon.svg" alt=""> Local<span>Jobs</span>.de</a>
     <nav class="main-nav">
-      <a href="/jobs.html" class="<%= typeof active !== 'undefined' && active === 'jobs' ? 'active' : '' %>">Jobs finden</a>
-      <a href="/employer/dashboard.html" class="<%= typeof active !== 'undefined' && active === 'employer' ? 'active' : '' %>">Für Arbeitgeber</a>
+      <a href="/jobs.html" class="<%= typeof active !== 'undefined' && active === 'jobs' ? 'active' : '' %>">Find Jobs</a>
+      <a href="/employer/dashboard.html" class="<%= typeof active !== 'undefined' && active === 'employer' ? 'active' : '' %>">For Employers</a>
     </nav>
     <div class="header-actions">
-      <a href="/saved-jobs.html" class="icon-btn desktop-only-action" aria-label="Gespeicherte Jobs">
+      <a href="/saved-jobs.html" class="icon-btn desktop-only-action" aria-label="Saved Jobs">
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.35-9.5-8.9A5.4 5.4 0 0 1 12 6a5.4 5.4 0 0 1 9.5 6.1C19 16.65 12 21 12 21z"/></svg>
       </a>
       <% if (currentUser) { %>
-        <a href="/cv-builder.html" class="icon-btn desktop-only-action" aria-label="Mein Lebenslauf">
+        <a href="/cv-builder.html" class="icon-btn desktop-only-action" aria-label="My CV">
           <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
         </a>
-        <div class="avatar-chip desktop-only-action" title="<%= currentUser.firstName %> <%= currentUser.lastName %>"><img src="/assets/img/avatar-user.svg" alt="Profil"></div>
-        <a href="/logout" class="btn btn-outline btn-sm desktop-only-action">Abmelden</a>
+        <div class="avatar-chip desktop-only-action" title="<%= currentUser.firstName %> <%= currentUser.lastName %>"><img src="/assets/img/avatar-user.svg" alt="Profile"></div>
+        <a href="/logout" class="btn btn-outline btn-sm desktop-only-action">Log Out</a>
       <% } else { %>
-        <a href="/login.html" class="btn btn-primary btn-sm desktop-only-action">Anmelden / Registrieren</a>
+        <a href="/login.html" class="btn btn-primary btn-sm desktop-only-action">Log In / Sign Up</a>
       <% } %>
-      <button class="hamburger" aria-label="Menü"><span></span></button>
+      <button class="hamburger" aria-label="Menu"><span></span></button>
     </div>
   </div>
 </header>

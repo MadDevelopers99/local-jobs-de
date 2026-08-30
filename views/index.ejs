@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LocalJobs.de – Finde deinen Job in München</title>
+<title>LocalJobs.de – Find Your Job</title>
 <link rel="icon" href="/assets/img/logo-icon.svg">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7/css/flag-icons.min.css">
@@ -16,39 +16,39 @@
 <section class="hero" style="background:#0f3d2e">
   <div class="hero-media"><img src="/assets/img/hero-munich.svg" alt="" style="width:100%;height:100%;object-fit:cover"></div>
   <div class="container hero-inner">
-    <h1>Finde deinen<br>Job in <span>München</span></h1>
-    <p>Über <%= totalJobs %> Jobs von <%= totalCompanies %> Unternehmen</p>
+    <h1>Find Your Job<br>in <span id="heroCountryName">Germany</span></h1>
+    <p>Over <%= totalJobs %> jobs from <%= totalCompanies %> companies</p>
     <button type="button" class="country-trigger" id="countryTrigger">
       <span id="countryFlagDisplay" class="fi fi-de"></span>
-      <span id="countryNameDisplay">Deutschland</span>
+      <span id="countryNameDisplay">Germany</span>
       <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
     <form class="search-bar" action="/jobs.html" method="get">
       <input type="hidden" name="land" id="countryCodeInput" value="DE">
       <div class="field">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" name="q" placeholder="Jobtitel oder Stichwort">
+        <input type="text" name="q" placeholder="Job title or keyword">
       </div>
       <div class="divider"></div>
       <div class="field">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        <input type="text" name="ort" id="ortInput" value="München, Deutschland">
+        <input type="text" name="ort" id="ortInput" value="Munich, Germany">
       </div>
       <div class="divider"></div>
       <div class="field" style="max-width:170px">
         <select name="category">
-          <option value="">Alle Kategorien</option>
+          <option value="">All Categories</option>
           <% JOB_CATEGORIES.forEach(cat => { %><option value="<%= cat %>"><%= cat %></option><% }) %>
         </select>
       </div>
-      <button type="submit" class="btn btn-primary btn-lg">Jobs finden</button>
+      <button type="submit" class="btn btn-primary btn-lg">Find Jobs</button>
     </form>
     <div class="popular-searches">
-      <span class="pill">Minijob</span>
-      <span class="pill">Teilzeit</span>
-      <span class="pill">Studentenjob</span>
-      <span class="pill">Aushilfe</span>
-      <span class="pill">Quereinsteiger</span>
+      <span class="pill">Mini Job</span>
+      <span class="pill">Part-Time</span>
+      <span class="pill">Student Job</span>
+      <span class="pill">Temporary</span>
+      <span class="pill">Career Change</span>
     </div>
   </div>
 </section>
@@ -56,22 +56,22 @@
 <div class="container">
   <div class="category-grid">
     <% const icons = {
-      'Gastronomie': '<path d="M3 2v7a4 4 0 0 0 4 4v9"/><path d="M7 2v7"/><path d="M11 2v7"/><path d="M17 2c-2 2-2 5-2 8 0 3 2 4 2 4v9"/>',
-      'Verkauf': '<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>',
-      'Lager & Logistik': '<path d="M21 8 12 3 3 8l9 5 9-5z"/><path d="M3 8v10l9 5 9-5V8"/><path d="M12 13v10"/>',
-      'Büro & Admin': '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M8 4v5"/>',
-      'Handwerk': '<path d="M14.7 6.3a4 4 0 1 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-3-3z"/>',
-      'Reinigung': '<path d="M4 22h16"/><path d="M12 2v13"/><path d="M8 8l4-4 4 4"/><circle cx="12" cy="18" r="3"/>',
+      'Food & Hospitality': '<path d="M3 2v7a4 4 0 0 0 4 4v9"/><path d="M7 2v7"/><path d="M11 2v7"/><path d="M17 2c-2 2-2 5-2 8 0 3 2 4 2 4v9"/>',
+      'Retail & Sales': '<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>',
+      'Warehouse & Logistics': '<path d="M21 8 12 3 3 8l9 5 9-5z"/><path d="M3 8v10l9 5 9-5V8"/><path d="M12 13v10"/>',
+      'Office & Admin': '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M8 4v5"/>',
+      'Skilled Trades': '<path d="M14.7 6.3a4 4 0 1 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-3-3z"/>',
+      'Cleaning': '<path d="M4 22h16"/><path d="M12 2v13"/><path d="M8 8l4-4 4 4"/><circle cx="12" cy="18" r="3"/>',
     }; %>
     <% categoryCounts.forEach(cat => { %>
       <a class="category-card" href="/jobs.html?kat=<%= encodeURIComponent(cat.name) %>">
         <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><%- icons[cat.name] || '' %></svg></div>
-        <strong><%= cat.name %></strong><small><%= cat.count %> Jobs</small>
+        <strong><%= cat.name %></strong><small><%= cat.count %> job<%= cat.count === 1 ? '' : 's' %></small>
       </a>
     <% }) %>
     <a class="category-card" href="/jobs.html">
       <div class="ico" style="background:var(--primary);color:#fff"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><line x1="12" y1="5" x2="19" y2="12"/><line x1="12" y1="19" x2="19" y2="12"/></svg></div>
-      <strong>Alle Kategorien</strong><small>ansehen</small>
+      <strong>All Categories</strong><small>view all</small>
     </a>
   </div>
 </div>
@@ -79,14 +79,14 @@
 <section class="section">
   <div class="container">
     <div class="section-head">
-      <h2>Neueste Jobs</h2>
-      <a href="/jobs.html">Alle Jobs ansehen →</a>
+      <h2>Latest Jobs</h2>
+      <a href="/jobs.html">View all jobs →</a>
     </div>
 
     <% if (recentJobs.length === 0) { %>
       <div class="empty-state">
-        <p>Noch keine Stellenanzeigen vorhanden.</p>
-        <a href="/employer/dashboard.html" class="btn btn-primary" style="margin-top:14px">Erste Stelle inserieren</a>
+        <p>No job listings yet.</p>
+        <a href="/employer/dashboard.html" class="btn btn-primary" style="margin-top:14px">Post the First Job</a>
       </div>
     <% } else { %>
       <div class="job-grid">
@@ -98,17 +98,17 @@
 
     <div style="margin-top:24px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);height:280px;position:relative">
       <div id="home-map" class="leaflet-map-box"></div>
-      <a href="/jobs.html" class="btn btn-outline btn-sm" style="position:absolute;bottom:14px;right:14px;background:#fff;z-index:401">Karte / Liste</a>
+      <a href="/jobs.html" class="btn btn-outline btn-sm" style="position:absolute;bottom:14px;right:14px;background:#fff;z-index:401">Map / List</a>
     </div>
   </div>
 </section>
 
 <section class="section" style="background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
   <div class="container">
-    <div class="section-head"><h2>Für Arbeitgeber</h2></div>
+    <div class="section-head"><h2>For Employers</h2></div>
     <div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap;justify-content:space-between">
-      <p style="max-width:520px;color:var(--text-muted);font-size:15px">Registriere dein Unternehmen und schalte unbegrenzt viele Stellenanzeigen — kostenlos.</p>
-      <a href="/employer/dashboard.html" class="btn btn-primary btn-lg">Jetzt Stelle inserieren</a>
+      <p style="max-width:520px;color:var(--text-muted);font-size:15px">Register your company and post unlimited job listings — for free.</p>
+      <a href="/employer/dashboard.html" class="btn btn-primary btn-lg">Post a Job Now</a>
     </div>
   </div>
 </section>
@@ -133,12 +133,19 @@
     ],
   });
 
+  function updateHeroCountry(name) {
+    const el = document.getElementById('heroCountryName');
+    if (el) el.textContent = name;
+  }
+  updateHeroCountry(localStorage.getItem('lj_country_name') || 'Germany');
+
   ljInitCountrySelector({
     defaultCode: 'DE',
     onSelect: function (country) {
       document.getElementById('countryCodeInput').value = country.code;
       const ortInput = document.getElementById('ortInput');
-      if (ortInput) ortInput.value = country.code === 'DE' ? 'München, Deutschland' : country.name;
+      if (ortInput) ortInput.value = country.code === 'DE' ? 'Munich, Germany' : country.name;
+      updateHeroCountry(country.name);
     },
   });
 </script>

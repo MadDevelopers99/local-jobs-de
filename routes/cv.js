@@ -101,7 +101,7 @@ router.post('/cv-builder.html/language/add', requireLogin, async (req, res) => {
   const profile = await getOrCreateCvProfile(req.currentUser.id);
   const { name, level, returnToApply } = req.body;
   if (name) {
-    await prisma.cvLanguage.create({ data: { cvProfileId: profile.id, name, level: level || 'Gut' } });
+    await prisma.cvLanguage.create({ data: { cvProfileId: profile.id, name, level: level || 'Good' } });
   }
   res.redirect('/cv-builder.html' + (returnToApply ? '?returnToApply=' + returnToApply : ''));
 });
@@ -125,11 +125,11 @@ router.get('/cv/application.html', requireLogin, async (req, res) => {
     where: { id: applicationId },
     include: { job: { include: { company: true } }, applicant: true },
   });
-  if (!application) return res.status(404).send('Bewerbung nicht gefunden.');
+  if (!application) return res.status(404).send('Application not found.');
 
   const isOwner = application.applicantId === req.currentUser.id;
   const isEmployer = application.job.company.ownerId === req.currentUser.id;
-  if (!isOwner && !isEmployer) return res.status(403).send('Kein Zugriff auf diesen Lebenslauf.');
+  if (!isOwner && !isEmployer) return res.status(403).send('No access to this CV.');
 
   const snapshot = application.cvSnapshot;
   const template = req.query.template || snapshot.templateChoice || 'template1';

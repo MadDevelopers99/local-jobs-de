@@ -15,9 +15,9 @@ router.post('/add-business.html', requireLogin, async (req, res) => {
   const fail = (error) => res.render('business/register', { active: 'employer', error, form: req.body });
 
   if (!name || !contact || !email || !companyType || !country) {
-    return fail('Bitte fülle alle Pflichtfelder aus.');
+    return fail('Please fill in all required fields.');
   }
-  if (!COMPANY_TYPES.some((c) => c.value === companyType)) return fail('Ungültiger Unternehmenstyp.');
+  if (!COMPANY_TYPES.some((c) => c.value === companyType)) return fail('Invalid company type.');
 
   const company = await prisma.company.create({
     data: {
@@ -84,7 +84,7 @@ router.post('/employer/post-job.html', requireLogin, async (req, res) => {
 
   const companyId = parseInt(req.body.companyId, 10);
   const company = companies.find((c) => c.id === companyId);
-  if (!company) return res.status(403).send('Kein Zugriff auf dieses Unternehmen.');
+  if (!company) return res.status(403).send('No access to this company.');
 
   const {
     title, category, employmentType, country, city,
@@ -96,7 +96,7 @@ router.post('/employer/post-job.html', requireLogin, async (req, res) => {
   });
 
   if (!title || !category || !employmentType || !country || !description) {
-    return fail('Bitte fülle alle Pflichtfelder aus.');
+    return fail('Please fill in all required fields.');
   }
 
   const job = await prisma.job.create({
@@ -123,7 +123,7 @@ router.get('/employer/applicants.html', requireLogin, async (req, res) => {
   const jobId = parseInt(req.query.jobId, 10);
   const job = await prisma.job.findUnique({ where: { id: jobId }, include: { company: true } });
   if (!job || job.company.ownerId !== req.currentUser.id) {
-    return res.status(404).send('Stellenanzeige nicht gefunden.');
+    return res.status(404).send('Job listing not found.');
   }
 
   const applications = await prisma.application.findMany({
