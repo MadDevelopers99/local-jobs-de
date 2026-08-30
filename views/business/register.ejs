@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unternehmen registrieren – LocalJobs.de</title>
+<link rel="icon" href="/assets/img/logo-icon.svg">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7/css/flag-icons.min.css">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body class="no-bottom-pad" style="background:var(--bg)">
+
+<%- include('../partials/header', { active: 'employer' }) %>
+
+<main class="page-shell">
+  <div class="container" style="max-width:560px">
+    <div class="form-card">
+      <h2 style="font-size:20px;margin-bottom:4px">Unternehmen registrieren</h2>
+      <p style="color:var(--text-muted);font-size:14px;margin-bottom:20px">Lege dein Unternehmensprofil an, um anschließend unbegrenzt Stellenanzeigen zu veröffentlichen.</p>
+
+      <% if (error) { %>
+        <div class="badge badge-yellow" style="display:block;padding:10px 14px;margin-bottom:16px;font-weight:600"><%= error %></div>
+      <% } %>
+
+      <form method="post" action="/add-business.html">
+        <div class="field-group">
+          <label>Firmenname*</label>
+          <input type="text" name="name" required value="<%= form.name || '' %>" placeholder="z. B. Restaurant Augustiner">
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label>Kontakt (Telefon)*</label>
+            <input type="tel" name="contact" required value="<%= form.contact || '' %>">
+          </div>
+          <div class="field-group">
+            <label>E-Mail*</label>
+            <input type="email" name="email" required value="<%= form.email || '' %>">
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Website</label>
+          <input type="url" name="website" value="<%= form.website || '' %>" placeholder="https://...">
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label>Gründungsdatum</label>
+            <input type="date" name="foundedDate" value="<%= form.foundedDate || '' %>">
+          </div>
+          <div class="field-group">
+            <label>Mitarbeiterzahl</label>
+            <input type="number" name="totalEmployees" min="1" value="<%= form.totalEmployees || '' %>">
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Unternehmensart*</label>
+          <select name="companyType" required>
+            <option value="">Bitte wählen</option>
+            <% COMPANY_TYPES.forEach(ct => { %>
+              <option value="<%= ct.value %>" <%= form.companyType === ct.value ? 'selected' : '' %>><%= ct.label %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Land*</label>
+          <select name="country" required>
+            <% COUNTRIES.forEach(c => { %>
+              <option value="<%= c.code %>" <%= (form.country || 'DE') === c.code ? 'selected' : '' %>><%= c.name %></option>
+            <% }) %>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block btn-lg">Unternehmen registrieren</button>
+      </form>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>

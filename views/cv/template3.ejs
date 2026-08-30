@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><%= cv.fullName || 'Lebenslauf' %> – Lebenslauf</title>
+<link rel="icon" href="/assets/img/logo-icon.svg">
+<link rel="stylesheet" href="/assets/css/style.css">
+<style>
+  body{background:#e9ebe9;font-family:'Inter',system-ui,sans-serif}
+  .cv-toolbar{max-width:720px;margin:0 auto;padding:20px 24px 0;display:flex;justify-content:space-between;align-items:center}
+  .cv-page{max-width:720px;margin:20px auto 60px;background:#fff;box-shadow:var(--shadow-lg);padding:34px 40px}
+  .cv-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding-bottom:14px;border-bottom:3px solid #16a34a;margin-bottom:16px}
+  .cv-head h1{font-size:24px;font-weight:800;color:#111827}
+  .cv-head .headline{font-size:13px;color:#16a34a;font-weight:600}
+  .cv-head .contact{text-align:right;font-size:11.5px;color:#6b7280;line-height:1.6}
+  .cv-row{display:grid;grid-template-columns:120px 1fr;gap:12px;margin-bottom:10px;font-size:12.5px}
+  .cv-row .k{color:#16a34a;font-weight:700;text-transform:uppercase;font-size:10.5px;letter-spacing:.06em;padding-top:2px}
+  .cv-item{margin-bottom:9px}
+  .cv-item-head{font-weight:700;font-size:13px;color:#111827;display:flex;justify-content:space-between;gap:10px}
+  .cv-item-head .period{font-weight:400;color:#9ca3af;font-size:11px;white-space:nowrap}
+  .cv-item-sub{font-size:12px;color:#4b5563}
+  .cv-item p{font-size:12px;color:#4b5563;line-height:1.5;margin-top:2px}
+  .cv-tags span{display:inline-block;background:#f0fdf4;color:#15803d;border-radius:5px;padding:2px 8px;font-size:11px;margin:0 5px 5px 0}
+  @media print{
+    body{background:#fff}
+    .cv-toolbar{display:none}
+    .cv-page{box-shadow:none;margin:0;padding:0;max-width:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="cv-toolbar">
+  <a href="/cv-builder.html" class="btn btn-outline btn-sm">← Zurück zum Editor</a>
+  <button onclick="window.print()" class="btn btn-primary btn-sm">Als PDF speichern</button>
+</div>
+
+<div class="cv-page">
+  <div class="cv-head">
+    <div>
+      <h1><%= cv.fullName || 'Dein Name' %></h1>
+      <% if (cv.headline) { %><div class="headline"><%= cv.headline %></div><% } %>
+    </div>
+    <div class="contact">
+      <% if (cv.phone) { %><div><%= cv.phone %></div><% } %>
+      <% if (cv.email) { %><div><%= cv.email %></div><% } %>
+      <% if (cv.address) { %><div><%= cv.address %></div><% } %>
+    </div>
+  </div>
+
+  <% if (cv.summary) { %>
+    <div class="cv-row"><div class="k">Profil</div><div><%= cv.summary %></div></div>
+  <% } %>
+
+  <% if (cv.experience.length) { %>
+    <div class="cv-row">
+      <div class="k">Erfahrung</div>
+      <div>
+        <% cv.experience.forEach(e => { %>
+          <div class="cv-item">
+            <div class="cv-item-head"><span><%= e.jobTitle %> · <%= e.company %></span><span class="period"><%= e.period %></span></div>
+            <% if (e.description) { %><p><%= e.description %></p><% } %>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  <% } %>
+
+  <% if (cv.education.length) { %>
+    <div class="cv-row">
+      <div class="k">Ausbildung</div>
+      <div>
+        <% cv.education.forEach(e => { %>
+          <div class="cv-item">
+            <div class="cv-item-head"><span><%= e.degree %> · <%= e.institution %></span><span class="period"><%= e.period %></span></div>
+            <% if (e.description) { %><p><%= e.description %></p><% } %>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  <% } %>
+
+  <% if (cv.skills.length) { %>
+    <div class="cv-row">
+      <div class="k">Fähigkeiten</div>
+      <div class="cv-tags"><% cv.skills.forEach(s => { %><span><%= s.name %></span><% }) %></div>
+    </div>
+  <% } %>
+
+  <% if (cv.languages.length) { %>
+    <div class="cv-row">
+      <div class="k">Sprachen</div>
+      <div class="cv-tags"><% cv.languages.forEach(l => { %><span><%= l.name %> (<%= l.level %>)</span><% }) %></div>
+    </div>
+  <% } %>
+</div>
+</body>
+</html>

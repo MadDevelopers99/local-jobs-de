@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jobsuche – LocalJobs.de</title>
+<link rel="icon" href="/assets/img/logo-icon.svg">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7/css/flag-icons.min.css">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body class="no-bottom-pad">
+
+<%- include('partials/header', { active: 'jobs' }) %>
+
+<div class="container" style="padding-top:16px">
+  <form class="search-bar-compact" method="get" action="/jobs.html">
+    <input type="hidden" name="land" id="countryCodeInput" value="<%= filters.land %>">
+    <div class="field">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" name="q" value="<%= filters.q %>" placeholder="Jobtitel oder Stichwort">
+    </div>
+    <div class="divider"></div>
+    <button type="button" class="country-trigger" id="countryTrigger" style="color:var(--text);background:none;border:1px solid var(--border-strong);margin:0">
+      <span id="countryFlagDisplay" class="fi fi-<%= (filters.land || 'de').toLowerCase() %>"></span>
+      <span id="countryNameDisplay"><%= countryName(filters.land || 'DE') %></span>
+      <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="divider"></div>
+    <div class="field" style="max-width:190px">
+      <select name="category">
+        <option value="">Alle Kategorien</option>
+        <% JOB_CATEGORIES.forEach(cat => { %>
+          <option value="<%= cat %>" <%= filters.category === cat ? 'selected' : '' %>><%= cat %></option>
+        <% }) %>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-outline btn-sm" style="flex-shrink:0">Suchen</button>
+    <button type="button" class="btn btn-outline btn-sm" id="filterToggleMobile" style="flex-shrink:0">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="20" y2="12"/><line x1="12" y1="18" x2="20" y2="18"/><circle cx="6" cy="12" r="1.5" fill="currentColor"/><circle cx="9" cy="18" r="1.5" fill="currentColor"/></svg>
+      Filter
+    </button>
+  </form>
+</div>
+
+<main class="page-shell">
+  <div class="container">
+    <div class="layout-2col">
+
+      <aside class="filter-panel" id="filterPanel">
+        <div class="filter-group" style="display:flex;align-items:center;justify-content:space-between">
+          <h4 style="margin:0">Filter</h4>
+          <a href="/jobs.html" style="font-size:12.5px;color:var(--primary);font-weight:700">Zurücksetzen</a>
+        </div>
+        <div class="filter-group">
+          <h4>Unternehmensart</h4>
+          <% COMPANY_TYPES.forEach(ct => { %>
+            <a href="/jobs.html?<%= new URLSearchParams({ ...filters, type: filters.type === ct.value ? '' : ct.value }).toString() %>"
+               class="checkbox-row" style="text-decoration:none;<%= filters.type === ct.value ? 'font-weight:700;color:var(--primary)' : '' %>">
+              <input type="checkbox" <%= filters.type === ct.value ? 'checked' : '' %> onclick="return false" style="pointer-events:none">
+              <%= ct.label %>
+            </a>
+          <% }) %>
+        </div>
+      </aside>
+
+      <div>
+        <div class="results-toolbar">
+          <div><strong id="resultsCount"><%= jobs.length %> Jobs gefunden</strong><span id="resultsCountry"><%= filters.land ? ' in ' + countryName(filters.land) : '' %></span></div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <form method="get" action="/jobs.html" id="sortForm">
+              <% Object.entries(filters).forEach(([k, v]) => { if (k !== 'sort' && v) { %><input type="hidden" name="<%= k %>" value="<%= v %>"><% } }) %>
+              <select class="select-inline" name="sort" onchange="document.getElementById('sortForm').submit()">
+                <option value="" <%= filters.sort === '' ? 'selected' : '' %>>Sortieren: Neueste</option>
+                <option value="salary" <%= filters.sort === 'salary' ? 'selected' : '' %>>Gehalt: hoch → niedrig</option>
+              </select>
+            </form>
+            <div class="view-toggle">
+              <button type="button" class="active" data-view="list">Liste</button>
+              <button type="button" data-view="map">Karte</button>
+            </div>
+          </div>
+        </div>
+
+        <% if (jobs.length === 0) { %>
+          <div class="empty-state">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <p>Keine Jobs für diese Suche gefunden.</p>
+          </div>
+        <% } else { %>
+          <div data-view-panel="list" class="job-list">
+            <% jobs.forEach(job => { %>
+              <%- include('partials/job-card', { job }) %>
+            <% }) %>
+          </div>
+        <% } %>
+
+        <div data-view-panel="map" class="map-shell" style="display:none">
+          <div id="jobs-map" class="leaflet-map-box"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include('partials/footer') %>
+<%- include('partials/country-modal') %>
+<%- include('partials/bottom-nav', { active: 'jobs' }) %>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="/assets/js/maps.js"></script>
+<script src="/assets/js/countries.js"></script>
+<script src="/assets/js/main.js"></script>
+<script>
+  ljCreateMap('jobs-map', { center: [48.1351, 11.5820], zoom: 6, markers: [] });
+
+  ljInitCountrySelector({
+    defaultCode: '<%= filters.land || "DE" %>',
+    onSelect: function (country) {
+      document.getElementById('countryCodeInput').value = country.code;
+    },
+  });
+
+  document.getElementById('filterToggleMobile')?.addEventListener('click', () => {
+    const panel = document.getElementById('filterPanel');
+    panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+  });
+  function applyMobileFilterDefault(){
+    if (window.innerWidth <= 900) document.getElementById('filterPanel').style.display = 'none';
+  }
+  applyMobileFilterDefault();
+  window.addEventListener('resize', applyMobileFilterDefault);
+</script>
+</body>
+</html>

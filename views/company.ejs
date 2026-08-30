@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><%= company.name %> – LocalJobs.de</title>
+<link rel="icon" href="/assets/img/logo-icon.svg">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+
+<%- include('partials/header', { active: null }) %>
+
+<div style="max-width:1240px;margin:0 auto;padding:0 24px">
+  <a href="/jobs.html" class="breadcrumb-back" style="margin-top:16px">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="15 18 9 12 15 6"/></svg>
+    Zurück
+  </a>
+  <div class="company-cover" style="background:<%= avatarColorFor(company.name) %>;display:flex;align-items:center;justify-content:center">
+    <span style="font-size:64px;font-weight:800;color:rgba(255,255,255,.35)"><%= initialsFor(company.name) %></span>
+  </div>
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:14px">
+    <div class="company-head">
+      <%- include('partials/company-logo', { name: company.name, size: 88 }) %>
+      <div>
+        <h1><%= company.name %></h1>
+        <div class="company-meta">
+          <span class="badge badge-gray"><%= companyTypeLabel(company.companyType) %></span>
+          <span><%= countryName(company.country) %></span>
+          <% if (company.totalEmployees) { %><span><%= company.totalEmployees %> Mitarbeiter</span><% } %>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;padding-bottom:16px">
+      <a href="/jobs.html?q=<%= encodeURIComponent(company.name) %>" class="btn btn-primary">Alle Jobs ansehen</a>
+    </div>
+  </div>
+</div>
+
+<main class="page-shell" style="padding-top:0">
+  <div class="container">
+    <div class="detail-grid">
+      <div>
+        <div data-tabs class="tabs">
+          <button class="active" data-tab="c-about">Über uns</button>
+          <button data-tab="c-jobs">Jobs (<%= company.jobs.length %>)</button>
+        </div>
+
+        <div id="c-about" class="tab-panel active">
+          <div class="stat-row">
+            <% if (company.foundedDate) { %><div><strong><%= company.foundedDate.getFullYear() %></strong><span>Gegründet</span></div><% } %>
+            <% if (company.totalEmployees) { %><div><strong><%= company.totalEmployees %></strong><span>Mitarbeiter</span></div><% } %>
+            <div><strong><%= company.jobs.length %></strong><span>Offene Stellen</span></div>
+            <% if (company.website) { %><div><strong><a href="<%= company.website %>" target="_blank" class="map-link" style="font-size:15px"><%= company.website.replace(/^https?:\/\//, '') %></a></strong><span>Website</span></div><% } %>
+          </div>
+        </div>
+
+        <div id="c-jobs" class="tab-panel">
+          <% if (company.jobs.length === 0) { %>
+            <p style="color:var(--text-muted)">Aktuell keine offenen Stellen.</p>
+          <% } else { %>
+            <div class="job-list">
+              <% company.jobs.forEach(job => { %>
+                <%- include('partials/job-card', { job: Object.assign(job, { company }) }) %>
+              <% }) %>
+            </div>
+          <% } %>
+        </div>
+      </div>
+
+      <aside>
+        <div class="info-card">
+          <h4>Kontakt</h4>
+          <p><%= company.email %><br><%= company.contact %></p>
+          <% if (company.website) { %><a href="<%= company.website %>" target="_blank" class="map-link"><%= company.website.replace(/^https?:\/\//, '') %> →</a><% } %>
+        </div>
+        <div class="info-card">
+          <h4>Unternehmensart</h4>
+          <p><%= companyTypeLabel(company.companyType) %></p>
+        </div>
+        <div class="info-card">
+          <h4>Land</h4>
+          <p><%= countryName(company.country) %></p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<%- include('partials/bottom-nav') %>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>

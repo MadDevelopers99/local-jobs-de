@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neue Stellenanzeige – LocalJobs.de</title>
+<link rel="icon" href="/assets/img/logo-icon.svg">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body class="no-bottom-pad">
+
+<%- include('../partials/header', { active: 'employer' }) %>
+
+<main class="page-shell">
+  <div class="container" style="max-width:620px">
+    <a href="/employer/dashboard.html?companyId=<%= company.id %>" class="breadcrumb-back">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="15 18 9 12 15 6"/></svg>
+      Dashboard
+    </a>
+
+    <div class="form-card">
+      <h2 style="font-size:19px;margin-bottom:4px">Neue Stellenanzeige</h2>
+      <% if (companies.length > 1) { %>
+        <div class="field-group" style="margin-bottom:16px">
+          <label>Unternehmen</label>
+          <select onchange="window.location.href='/employer/post-job.html?companyId=' + this.value">
+            <% companies.forEach(c => { %><option value="<%= c.id %>" <%= c.id === company.id ? 'selected' : '' %>><%= c.name %></option><% }) %>
+          </select>
+        </div>
+      <% } else { %>
+        <p style="color:var(--text-muted);font-size:13.5px;margin-bottom:20px">für <%= company.name %></p>
+      <% } %>
+
+      <% if (error) { %>
+        <div class="badge badge-yellow" style="display:block;padding:10px 14px;margin-bottom:16px;font-weight:600"><%= error %></div>
+      <% } %>
+
+      <div class="stepper">
+        <div class="step current"><div class="num">1</div><span class="label">Basisdaten</span></div>
+        <div class="line"></div>
+        <div class="step"><div class="num">2</div><span class="label">Beschreibung</span></div>
+        <div class="line"></div>
+        <div class="step"><div class="num">3</div><span class="label">Anforderungen</span></div>
+      </div>
+      <div class="stepper-caption" aria-live="polite"></div>
+
+      <form method="post" action="/employer/post-job.html">
+        <input type="hidden" name="companyId" value="<%= company.id %>">
+
+        <div class="form-step">
+          <div class="field-group">
+            <label>Jobtitel*</label>
+            <input type="text" name="title" required value="<%= form.title || '' %>" placeholder="z. B. Küchenhilfe (m/w/d)">
+          </div>
+          <div class="field-group">
+            <label>Kategorie*</label>
+            <select name="category" required>
+              <option value="">Bitte wählen</option>
+              <% JOB_CATEGORIES.forEach(cat => { %><option value="<%= cat %>" <%= form.category === cat ? 'selected' : '' %>><%= cat %></option><% }) %>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Arbeitszeit*</label>
+            <select name="employmentType" required>
+              <option value="">Bitte wählen</option>
+              <% EMPLOYMENT_TYPES.forEach(t => { %><option value="<%= t %>" <%= form.employmentType === t ? 'selected' : '' %>><%= t %></option><% }) %>
+            </select>
+          </div>
+          <div class="field-row">
+            <div class="field-group">
+              <label>Land*</label>
+              <select name="country" required>
+                <% COUNTRIES.forEach(c => { %><option value="<%= c.code %>" <%= (form.country || company.country) === c.code ? 'selected' : '' %>><%= c.name %></option><% }) %>
+              </select>
+            </div>
+            <div class="field-group">
+              <label>Stadt</label>
+              <input type="text" name="city" value="<%= form.city || '' %>" placeholder="z. B. München">
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field-group">
+              <label>Gehalt von (€/Std)</label>
+              <input type="number" name="salaryMin" min="0" step="0.5" value="<%= form.salaryMin || '' %>">
+            </div>
+            <div class="field-group">
+              <label>Gehalt bis (€/Std)</label>
+              <input type="number" name="salaryMax" min="0" step="0.5" value="<%= form.salaryMax || '' %>">
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary btn-block btn-lg" data-next-step>Weiter</button>
+        </div>
+
+        <div class="form-step" style="display:none">
+          <div class="field-group">
+            <label>Jobbeschreibung*</label>
+            <textarea name="description" rows="4" required placeholder="Beschreibe die Tätigkeit ..."><%= form.description || '' %></textarea>
+          </div>
+          <div class="field-group">
+            <label>Deine Aufgaben (eine pro Zeile)</label>
+            <textarea name="responsibilities" rows="4" placeholder="Aufgabe 1&#10;Aufgabe 2"><%= form.responsibilities || '' %></textarea>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button type="button" class="btn btn-outline btn-block" data-prev-step>Zurück</button>
+            <button type="button" class="btn btn-primary btn-block" data-next-step>Weiter</button>
+          </div>
+        </div>
+
+        <div class="form-step" style="display:none">
+          <div class="field-group">
+            <label>Dein Profil (Anforderungen, eine pro Zeile)</label>
+            <textarea name="requirements" rows="4" placeholder="Anforderung 1&#10;Anforderung 2"><%= form.requirements || '' %></textarea>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:8px">
+            <button type="button" class="btn btn-outline btn-block" data-prev-step>Zurück</button>
+            <button type="submit" class="btn btn-primary btn-block">Anzeige veröffentlichen</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+
+<script src="/assets/js/main.js"></script>
+</body>
+</html>

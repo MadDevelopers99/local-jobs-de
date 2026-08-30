@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mein Lebenslauf – LocalJobs.de</title>
+<link rel="icon" href="/assets/img/logo-icon.svg">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+
+<%- include('../partials/header', { active: 'cv' }) %>
+
+<main class="page-shell">
+  <div class="container" style="max-width:720px">
+    <h1 style="font-size:20px;font-weight:800;margin-bottom:6px">Mein Lebenslauf</h1>
+    <p style="color:var(--text-muted);font-size:14px;margin-bottom:20px">Fülle deinen Lebenslauf aus, um dich mit einem Klick auf Jobs zu bewerben.</p>
+
+    <% if (returnToApply) { %>
+      <div class="badge <%= complete ? 'badge-green' : 'badge-yellow' %>" style="display:block;padding:14px 16px;margin-bottom:20px;font-size:14px">
+        <% if (complete) { %>
+          ✓ Dein Lebenslauf ist vollständig — du kannst dich jetzt bewerben.
+          <form method="post" action="/apply.html" style="margin-top:10px">
+            <input type="hidden" name="jobId" value="<%= returnToApply %>">
+            <button type="submit" class="btn btn-primary">Bewerbung jetzt senden</button>
+          </form>
+        <% } else { %>
+          Bitte vervollständige zuerst deinen Lebenslauf (Name, Kontakt und mindestens eine Station), bevor du dich bewirbst.
+        <% } %>
+      </div>
+    <% } else if (saved) { %>
+      <div class="badge badge-green" style="display:block;padding:10px 14px;margin-bottom:20px">✓ Gespeichert</div>
+    <% } %>
+
+    <div class="form-card" style="margin-bottom:20px">
+      <h3 style="font-size:15px;margin-bottom:14px">Persönliche Daten</h3>
+      <form method="post" action="/cv-builder.html/profile">
+        <input type="hidden" name="returnToApply" value="<%= returnToApply || '' %>">
+        <div class="field-group">
+          <label>Vollständiger Name*</label>
+          <input type="text" name="fullName" value="<%= cvProfile.fullName || '' %>" required>
+        </div>
+        <div class="field-group">
+          <label>Berufsbezeichnung</label>
+          <input type="text" name="headline" value="<%= cvProfile.headline || '' %>" placeholder="z. B. Servicekraft mit 3 Jahren Erfahrung">
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label>Telefon</label>
+            <input type="tel" name="phone" value="<%= cvProfile.phone || '' %>">
+          </div>
+          <div class="field-group">
+            <label>E-Mail</label>
+            <input type="email" name="email" value="<%= cvProfile.email || '' %>">
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Adresse</label>
+          <input type="text" name="address" value="<%= cvProfile.address || '' %>" placeholder="Stadt, Land">
+        </div>
+        <div class="field-group">
+          <label>Über mich</label>
+          <textarea name="summary" rows="3"><%= cvProfile.summary || '' %></textarea>
+        </div>
+        <div class="field-group">
+          <label>CV-Vorlage</label>
+          <select name="templateChoice">
+            <option value="template1" <%= cvProfile.templateChoice === 'template1' ? 'selected' : '' %>>Vorlage 1 — Klassisch</option>
+            <option value="template2" <%= cvProfile.templateChoice === 'template2' ? 'selected' : '' %>>Vorlage 2 — Modern</option>
+            <option value="template3" <%= cvProfile.templateChoice === 'template3' ? 'selected' : '' %>>Vorlage 3 — Kompakt</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Speichern</button>
+      </form>
+    </div>
+
+    <div class="form-card" style="margin-bottom:20px">
+      <h3 style="font-size:15px;margin-bottom:14px">Berufserfahrung</h3>
+      <% cvProfile.experience.forEach(e => { %>
+        <div class="applicant-row" style="align-items:flex-start">
+          <div class="txt">
+            <strong><%= e.jobTitle %></strong>
+            <span><%= e.company %></span>
+          </div>
+          <form method="post" action="/cv-builder.html/experience/<%= e.id %>/delete">
+            <input type="hidden" name="returnToApply" value="<%= returnToApply || '' %>">
+            <button type="submit" class="icon-btn" style="width:32px;height:32px" aria-label="Entfernen">✕</button>
+          </form>
+        </div>
+      <% }) %>
+      <form method="post" action="/cv-builder.html/experience/add" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+        <input type="hidden" name="returnToApply" value="<%= returnToApply || '' %>">
+        <div class="field-row">
+          <div class="field-group"><label>Position*</label><input type="text" name="jobTitle"></div>
+          <div class="field-group"><label>Unternehmen*</label><input type="text" name="company"></div>
+        </div>
+        <div class="field-row">
+          <div class="field-group"><label>Von</label><input type="month" name="startDate"></div>
+          <div class="field-group"><label>Bis</label><input type="month" name="endDate"></div>
+        </div>
+        <label class="checkbox-row" style="margin-bottom:10px"><input type="checkbox" name="current"> Aktuelle Position</label>
+        <div class="field-group"><label>Beschreibung</label><textarea name="description" rows="2"></textarea></div>
+        <button type="submit" class="btn btn-outline btn-block">+ Station hinzufügen</button>
+      </form>
+    </div>
+
+    <div class="form-card" style="margin-bottom:20px">
+      <h3 style="font-size:15px;margin-bottom:14px">Ausbildung</h3>
+      <% cvProfile.education.forEach(e => { %>
+        <div class="applicant-row" style="align-items:flex-start">
+          <div class="txt">
+            <strong><%= e.degree %></strong>
+            <span><%= e.institution %></span>
+          </div>
+          <form method="post" action="/cv-builder.html/education/<%= e.id %>/delete">
+            <input type="hidden" name="returnToApply" value="<%= returnToApply || '' %>">
+            <button type="submit" class="icon-btn" style="width:32px;height:32px" aria-label="Entfernen">✕</button>
+          </form>
+        </div>
+      <% }) %>
+      <form method="post" action="/cv-builder.html/education/add" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+        <input type="hidden" name="returnToApply" value="<%= returnToApply || '' %>">
+        <div class="field-row">
+          <div class="field-group"><label>Abschluss*</label><input type="text" name="degree" placeholder="z. B. Mittlere Reife"></div>
+          <div class="field-group"><label>Institution*</label><input type="text" name="institution"></div>
+        </div>
+        <div class="field-row">
+          <div class="field-group"><label>Von</label><input type="month" name="startDate"></div>
+          <div class="field-group"><label>Bis</label><input type="month" name="endDate"></div>
+        </div>
+        <button type="submit" class="btn btn-outline btn-block">+ Ausbildung hinzufügen</button>
+      </form>
+    </div>
+
+    <div class="form-card" style="margin-bottom:20px">
+      <h3 style="font-size:15px;margin-bottom:14px">Fähigkeiten</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">
+        <% cvProfile.skills.forEach(s => { %>
+          <form method="post" action="/cv-builder.html/skill/<%= s.id %>/delete" style="display:inline">
+            <input type="hidden" name="returnToApply" value="<%= returnToApply || '' %>">
+            <button type="submit" class="badge badge-gray" style="border:none;cursor:pointer"><%= s.name %> ✕</button>
+          </form>
+        <% }) %>
+      </div>
+      <form method="post" action="/cv-builder.html/skill/add" style="display:flex;gap:8px;flex-wrap:wrap">
+        <input type="hidden" name="returnToApply" value="<%= returnToApply || '' %>">
+        <input type="text" name="name" placeholder="z. B. Teamfähigkeit" style="flex:1;min-width:160px;padding:10px 12px;border:1px solid var(--border-strong);border-radius:9px">
+        <button type="submit" class="btn btn-outline">+ Hinzufügen</button>
+      </form>
+    </div>
+
+    <div class="form-card" style="margin-bottom:20px">
+      <h3 style="font-size:15px;margin-bottom:14px">Sprachen</h3>
+      <% cvProfile.languages.forEach(l => { %>
+        <div class="applicant-row">
+          <div class="txt"><strong><%= l.name %></strong><span><%= l.level %></span></div>
+          <form method="post" action="/cv-builder.html/language/<%= l.id %>/delete">
+            <input type="hidden" name="returnToApply" value="<%= returnToApply || '' %>">
+            <button type="submit" class="icon-btn" style="width:32px;height:32px" aria-label="Entfernen">✕</button>
+          </form>
+        </div>
+      <% }) %>
+      <form method="post" action="/cv-builder.html/language/add" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+        <input type="hidden" name="returnToApply" value="<%= returnToApply || '' %>">
+        <input type="text" name="name" placeholder="Sprache" style="flex:1;min-width:120px;padding:10px 12px;border:1px solid var(--border-strong);border-radius:9px">
+        <select name="level" style="padding:10px 12px;border:1px solid var(--border-strong);border-radius:9px">
+          <option>Muttersprache</option><option selected>Fließend</option><option>Gut</option><option>Grundkenntnisse</option>
+        </select>
+        <button type="submit" class="btn btn-outline">+</button>
+      </form>
+    </div>
+
+    <a href="/cv/preview.html" target="_blank" class="btn btn-outline btn-block btn-lg">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Lebenslauf ansehen & als PDF speichern
+    </a>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>

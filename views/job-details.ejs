@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><%= job.title %> bei <%= job.company.name %> – LocalJobs.de</title>
+<link rel="icon" href="/assets/img/logo-icon.svg">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+
+<%- include('partials/header', { active: 'jobs' }) %>
+
+<div class="detail-header">
+  <div class="container">
+    <div class="detail-top">
+      <a href="/jobs.html" class="breadcrumb-back" style="margin:0">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="15 18 9 12 15 6"/></svg>
+        Zurück
+      </a>
+    </div>
+
+    <div class="detail-hero">
+      <%- include('partials/company-logo', { name: job.company.name, size: 72 }) %>
+      <div style="flex:1;min-width:220px">
+        <h1><%= job.title %></h1>
+        <div class="company-line">
+          <a href="/company.html?id=<%= job.company.id %>" style="color:var(--text-muted);font-weight:600"><%= job.company.name %></a>
+          <span class="badge badge-gray"><%= companyTypeLabel(job.company.companyType) %></span>
+        </div>
+        <div class="company-line" style="margin-bottom:0">
+          <span>📍 <%= job.city ? job.city + ', ' : '' %><%= countryName(job.country) %></span>
+          <span>·</span>
+          <span>👥 <%= job._count.applications %> Bewerber</span>
+        </div>
+      </div>
+      <div style="font-size:12.5px;color:var(--text-faint)">
+        Eingestellt am <%= job.createdAt.toLocaleDateString('de-DE') %>
+      </div>
+    </div>
+
+    <% if (applied) { %>
+      <div class="badge badge-green" style="display:block;padding:12px 16px;font-size:14px;margin-bottom:16px">
+        ✓ Deine Bewerbung wurde gesendet — <%= job.company.name %> kann jetzt deinen Lebenslauf einsehen.
+      </div>
+    <% } %>
+
+    <div class="detail-actions">
+      <% if (!currentUser) { %>
+        <a href="/login.html?next=<%= encodeURIComponent('/job-details.html?id=' + job.id) %>" class="btn btn-primary btn-lg">Jetzt bewerben</a>
+      <% } else if (alreadyApplied) { %>
+        <button class="btn btn-outline btn-lg" disabled>✓ Bereits beworben</button>
+      <% } else { %>
+        <form method="post" action="/apply.html" style="display:inline">
+          <input type="hidden" name="jobId" value="<%= job.id %>">
+          <button type="submit" class="btn btn-primary btn-lg">Jetzt bewerben</button>
+        </form>
+      <% } %>
+      <span class="badge badge-blue" style="align-self:center"><%= job.employmentType %></span>
+      <span class="badge badge-green" style="align-self:center"><%= job.category %></span>
+    </div>
+  </div>
+</div>
+
+<main class="page-shell">
+  <div class="container">
+    <div class="detail-grid">
+      <div>
+        <div data-tabs class="tabs">
+          <button class="active" data-tab="panel-desc">Jobbeschreibung</button>
+          <button data-tab="panel-about">Über uns</button>
+        </div>
+
+        <div id="panel-desc" class="tab-panel active">
+          <div class="info-card">
+            <h4>Beschreibung</h4>
+            <p style="white-space:pre-line;color:var(--text)"><%= job.description %></p>
+          </div>
+          <% if (job.responsibilities) { %>
+            <div class="info-card">
+              <h4>Deine Aufgaben</h4>
+              <ul class="bullet-list">
+                <% job.responsibilities.split('\n').filter(Boolean).forEach(line => { %><li><%= line.trim() %></li><% }) %>
+              </ul>
+            </div>
+          <% } %>
+          <% if (job.requirements) { %>
+            <div class="info-card">
+              <h4>Dein Profil</h4>
+              <ul class="bullet-list">
+                <% job.requirements.split('\n').filter(Boolean).forEach(line => { %><li><%= line.trim() %></li><% }) %>
+              </ul>
+            </div>
+          <% } %>
+        </div>
+
+        <div id="panel-about" class="tab-panel">
+          <div class="info-card">
+            <h4>Über <%= job.company.name %></h4>
+            <div class="stat-row" style="margin-top:0">
+              <div><strong><%= companyTypeLabel(job.company.companyType) %></strong><span>Unternehmensart</span></div>
+              <% if (job.company.totalEmployees) { %><div><strong><%= job.company.totalEmployees %></strong><span>Mitarbeiter</span></div><% } %>
+              <% if (job.company.foundedDate) { %><div><strong><%= job.company.foundedDate.getFullYear() %></strong><span>Gegründet</span></div><% } %>
+            </div>
+            <a href="/company.html?id=<%= job.company.id %>" class="map-link">Unternehmensprofil ansehen →</a>
+          </div>
+        </div>
+      </div>
+
+      <aside>
+        <div class="info-card">
+          <h4>Standort</h4>
+          <p><%= job.city ? job.city + ', ' : '' %><%= countryName(job.country) %></p>
+        </div>
+        <div class="info-card">
+          <h4>Arbeitszeit</h4>
+          <p><%= job.employmentType %></p>
+        </div>
+        <% if (job.salaryMin) { %>
+          <div class="info-card">
+            <h4>Gehalt</h4>
+            <p style="font-size:20px;font-weight:800;color:var(--text)">
+              <%= job.salaryMin %><% if (job.salaryMax && job.salaryMax !== job.salaryMin) { %>–<%= job.salaryMax %><% } %> <%= job.salaryCurrency %>
+              <span style="font-size:13px;font-weight:600;color:var(--text-muted)">pro Stunde</span>
+            </p>
+          </div>
+        <% } %>
+        <div class="info-card">
+          <h4>Bewerber</h4>
+          <p style="font-size:20px;font-weight:800;color:var(--text)"><%= job._count.applications %></p>
+        </div>
+      </aside>
+    </div>
+
+    <% if (similarJobs.length) { %>
+      <section style="margin-top:44px">
+        <div class="section-head"><h2 style="font-size:19px">Ähnliche Jobs</h2></div>
+        <div class="job-list">
+          <% similarJobs.forEach(sjob => { %>
+            <%- include('partials/job-card', { job: sjob }) %>
+          <% }) %>
+        </div>
+      </section>
+    <% } %>
+  </div>
+</main>
+
+<%- include('partials/footer') %>
+<%- include('partials/bottom-nav') %>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>

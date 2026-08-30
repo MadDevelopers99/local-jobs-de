@@ -1,0 +1,15 @@
+<a href="/job-details.html?id=<%= job.id %>" class="job-card">
+  <%- include('company-logo', { name: job.company.name }) %>
+  <div class="body">
+    <h3><%= job.title %></h3>
+    <div class="company"><%= job.company.name %></div>
+    <div class="meta">
+      <span>📍 <%= job.city ? job.city + ', ' : '' %><%= countryName(job.country) %></span>
+      <span><%= job.employmentType %></span>
+      <span>👥 <%= job._count ? job._count.applications : 0 %> Bewerber</span>
+    </div>
+    <% if (job.salaryMin) { %>
+      <div class="price"><%= job.salaryMin %><% if (job.salaryMax && job.salaryMax !== job.salaryMin) { %>–<%= job.salaryMax %><% } %> <%= job.salaryCurrency %>/Std</div>
+    <% } %>
+  </div>
+</a>

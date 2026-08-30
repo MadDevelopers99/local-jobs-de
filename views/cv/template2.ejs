@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><%= cv.fullName || 'Lebenslauf' %> – Lebenslauf</title>
+<link rel="icon" href="/assets/img/logo-icon.svg">
+<link rel="stylesheet" href="/assets/css/style.css">
+<style>
+  body{background:#e9ebe9;font-family:'Inter',system-ui,sans-serif}
+  .cv-toolbar{max-width:800px;margin:0 auto;padding:20px 24px 0;display:flex;justify-content:space-between;align-items:center}
+  .cv-page{max-width:800px;margin:20px auto 60px;background:#fff;box-shadow:var(--shadow-lg);display:grid;grid-template-columns:250px 1fr;min-height:1000px}
+  .cv-side{background:#0f3d2e;color:#e8f8ee;padding:40px 26px}
+  .cv-avatar{width:84px;height:84px;border-radius:50%;background:#16a34a;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;color:#fff;margin-bottom:18px}
+  .cv-side h1{font-size:21px;font-weight:800;color:#fff;margin-bottom:2px}
+  .cv-side .headline{font-size:12.5px;color:#7ee6a8;margin-bottom:22px}
+  .cv-side h3{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#7ee6a8;margin:22px 0 10px}
+  .cv-side .contact-line{font-size:12px;margin-bottom:7px;word-break:break-word;color:#d7ede1}
+  .cv-side .skill-line{font-size:12.5px;margin-bottom:8px;color:#e8f8ee}
+  .cv-main{padding:40px 34px}
+  .cv-main h3{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#15803d;border-bottom:2px solid #d1fae5;padding-bottom:6px;margin-bottom:14px}
+  .cv-item{margin-bottom:16px}
+  .cv-item-head{font-weight:700;font-size:14.5px;color:#111827}
+  .cv-item-sub{font-size:12.5px;color:#16a34a;font-weight:600;margin-bottom:2px}
+  .cv-item .period{font-size:11.5px;color:#9ca3af}
+  .cv-item p{font-size:13px;color:#4b5563;line-height:1.55;margin-top:4px}
+  .cv-main .summary{font-size:13.5px;color:#4b5563;line-height:1.6;margin-bottom:26px}
+  @media print{
+    body{background:#fff}
+    .cv-toolbar{display:none}
+    .cv-page{box-shadow:none;margin:0;max-width:none;grid-template-columns:220px 1fr}
+    .cv-side{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+
+<div class="cv-toolbar">
+  <a href="/cv-builder.html" class="btn btn-outline btn-sm">← Zurück zum Editor</a>
+  <button onclick="window.print()" class="btn btn-primary btn-sm">Als PDF speichern</button>
+</div>
+
+<div class="cv-page">
+  <aside class="cv-side">
+    <div class="cv-avatar"><%= (cv.fullName || '?').trim().split(/\s+/).map(w => w[0]).slice(0,2).join('').toUpperCase() %></div>
+    <h1><%= cv.fullName || 'Dein Name' %></h1>
+    <% if (cv.headline) { %><div class="headline"><%= cv.headline %></div><% } %>
+
+    <h3>Kontakt</h3>
+    <% if (cv.phone) { %><div class="contact-line"><%= cv.phone %></div><% } %>
+    <% if (cv.email) { %><div class="contact-line"><%= cv.email %></div><% } %>
+    <% if (cv.address) { %><div class="contact-line"><%= cv.address %></div><% } %>
+
+    <% if (cv.skills.length) { %>
+      <h3>Fähigkeiten</h3>
+      <% cv.skills.forEach(s => { %><div class="skill-line">• <%= s.name %></div><% }) %>
+    <% } %>
+
+    <% if (cv.languages.length) { %>
+      <h3>Sprachen</h3>
+      <% cv.languages.forEach(l => { %><div class="skill-line"><%= l.name %><br><span style="opacity:.7;font-size:11px"><%= l.level %></span></div><% }) %>
+    <% } %>
+  </aside>
+
+  <div class="cv-main">
+    <% if (cv.summary) { %><div class="summary"><%= cv.summary %></div><% } %>
+
+    <% if (cv.experience.length) { %>
+      <h3>Berufserfahrung</h3>
+      <% cv.experience.forEach(e => { %>
+        <div class="cv-item">
+          <div class="cv-item-head"><%= e.jobTitle %></div>
+          <div class="cv-item-sub"><%= e.company %></div>
+          <div class="period"><%= e.period %></div>
+          <% if (e.description) { %><p><%= e.description %></p><% } %>
+        </div>
+      <% }) %>
+    <% } %>
+
+    <% if (cv.education.length) { %>
+      <h3 style="margin-top:26px">Ausbildung</h3>
+      <% cv.education.forEach(e => { %>
+        <div class="cv-item">
+          <div class="cv-item-head"><%= e.degree %></div>
+          <div class="cv-item-sub"><%= e.institution %></div>
+          <div class="period"><%= e.period %></div>
+          <% if (e.description) { %><p><%= e.description %></p><% } %>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
+</div>
+</body>
+</html>

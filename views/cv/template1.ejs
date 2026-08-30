@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><%= cv.fullName || 'Lebenslauf' %> – Lebenslauf</title>
+<link rel="icon" href="/assets/img/logo-icon.svg">
+<link rel="stylesheet" href="/assets/css/style.css">
+<style>
+  body{background:#e9ebe9}
+  .cv-toolbar{max-width:760px;margin:0 auto;padding:20px 24px 0;display:flex;justify-content:space-between;align-items:center}
+  .cv-page{max-width:760px;margin:20px auto 60px;background:#fff;padding:56px 60px;box-shadow:var(--shadow-lg);color:#1f2937;font-family:Georgia,'Times New Roman',serif}
+  .cv-name{font-size:32px;font-weight:700;letter-spacing:.02em;margin-bottom:4px}
+  .cv-headline{font-size:15px;color:#16a34a;font-weight:600;margin-bottom:14px}
+  .cv-contact{font-size:12.5px;color:#4b5563;display:flex;flex-wrap:wrap;gap:14px;padding-bottom:18px;border-bottom:2px solid #16a34a;margin-bottom:22px}
+  .cv-section{margin-bottom:22px}
+  .cv-section h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#16a34a;border-bottom:1px solid #d1d5db;padding-bottom:6px;margin-bottom:12px}
+  .cv-item{margin-bottom:14px}
+  .cv-item-head{display:flex;justify-content:space-between;gap:12px;font-weight:700;font-size:14.5px}
+  .cv-item-sub{font-size:13px;color:#4b5563;margin-bottom:4px}
+  .cv-item p{font-size:13px;color:#374151;line-height:1.5;font-family:system-ui,sans-serif}
+  .cv-tags{display:flex;flex-wrap:wrap;gap:8px}
+  .cv-tags span{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;padding:4px 10px;border-radius:6px;font-size:12px;font-family:system-ui,sans-serif}
+  @media print{
+    body{background:#fff}
+    .cv-toolbar{display:none}
+    .cv-page{box-shadow:none;margin:0;padding:0;max-width:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="cv-toolbar">
+  <a href="/cv-builder.html" class="btn btn-outline btn-sm">← Zurück zum Editor</a>
+  <button onclick="window.print()" class="btn btn-primary btn-sm">Als PDF speichern</button>
+</div>
+
+<div class="cv-page">
+  <div class="cv-name"><%= cv.fullName || 'Dein Name' %></div>
+  <% if (cv.headline) { %><div class="cv-headline"><%= cv.headline %></div><% } %>
+  <div class="cv-contact">
+    <% if (cv.phone) { %><span><%= cv.phone %></span><% } %>
+    <% if (cv.email) { %><span><%= cv.email %></span><% } %>
+    <% if (cv.address) { %><span><%= cv.address %></span><% } %>
+  </div>
+
+  <% if (cv.summary) { %>
+    <div class="cv-section">
+      <h2>Über mich</h2>
+      <p style="font-family:system-ui,sans-serif;font-size:13.5px;line-height:1.6;color:#374151"><%= cv.summary %></p>
+    </div>
+  <% } %>
+
+  <% if (cv.experience.length) { %>
+    <div class="cv-section">
+      <h2>Berufserfahrung</h2>
+      <% cv.experience.forEach(e => { %>
+        <div class="cv-item">
+          <div class="cv-item-head"><span><%= e.jobTitle %></span><span style="font-weight:400;color:#6b7280;font-size:12.5px"><%= e.period %></span></div>
+          <div class="cv-item-sub"><%= e.company %></div>
+          <% if (e.description) { %><p><%= e.description %></p><% } %>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <% if (cv.education.length) { %>
+    <div class="cv-section">
+      <h2>Ausbildung</h2>
+      <% cv.education.forEach(e => { %>
+        <div class="cv-item">
+          <div class="cv-item-head"><span><%= e.degree %></span><span style="font-weight:400;color:#6b7280;font-size:12.5px"><%= e.period %></span></div>
+          <div class="cv-item-sub"><%= e.institution %></div>
+          <% if (e.description) { %><p><%= e.description %></p><% } %>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <% if (cv.skills.length) { %>
+    <div class="cv-section">
+      <h2>Fähigkeiten</h2>
+      <div class="cv-tags"><% cv.skills.forEach(s => { %><span><%= s.name %></span><% }) %></div>
+    </div>
+  <% } %>
+
+  <% if (cv.languages.length) { %>
+    <div class="cv-section">
+      <h2>Sprachen</h2>
+      <div class="cv-tags"><% cv.languages.forEach(l => { %><span><%= l.name %> — <%= l.level %></span><% }) %></div>
+    </div>
+  <% } %>
+</div>
+</body>
+</html>

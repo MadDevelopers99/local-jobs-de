@@ -2,11 +2,30 @@
   "name": "local-jobs-de",
   "version": "1.0.0",
   "private": true,
-  "description": "LocalJobs.de - responsive job portal (static HTML/CSS/JS)",
+  "description": "LocalJobs.de - job portal (Node/Express + PostgreSQL + Prisma)",
   "scripts": {
-    "start": "serve . -l $PORT"
+    "dev": "node server.js",
+    "start": "prisma migrate deploy && node server.js",
+    "postinstall": "prisma generate"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   },
   "dependencies": {
-    "serve": "^14.2.3"
+    "@prisma/client": "^5.20.0",
+    "bcrypt": "^5.1.1",
+    "connect-pg-simple": "^10.0.0",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.0",
+    "express-session": "^1.18.0",
+    "pg": "^8.13.0",
+    "prisma": "^5.20.0"
+  },
+  "allowScripts": {
+    "@prisma/client@5.22.0": true,
+    "@prisma/engines@5.22.0": true,
+    "bcrypt@5.1.1": true,
+    "prisma@5.22.0": true
   }
 }

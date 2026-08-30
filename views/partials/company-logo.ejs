@@ -1,0 +1,3 @@
+<div class="logo" style="background:<%= avatarColorFor(name) %>;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:<%= typeof size !== 'undefined' && size >= 72 ? '26px' : '15px' %>;<% if (typeof size !== 'undefined') { %>width:<%= size %>px;height:<%= size %>px;<% } %>">
+  <%= initialsFor(name) %>
+</div>
