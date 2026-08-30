@@ -2,19 +2,27 @@ require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
+const cookieParser = require('cookie-parser');
 const path = require('path');
 const { Pool: PgPool } = require('pg');
 
 const { attachUser } = require('./middleware/auth');
-const { avatarColorFor, initialsFor, companyTypeLabel, COMPANY_TYPES, JOB_CATEGORIES, EMPLOYMENT_TYPES } = require('./lib/constants');
+const { resolveCountry } = require('./middleware/country');
+const {
+  avatarColorFor, initialsFor, companyTypeLabel, COMPANY_TYPES,
+  JOB_CATEGORIES, POPULAR_CATEGORIES, CATEGORY_ICONS, EMPLOYMENT_TYPES,
+} = require('./lib/constants');
 const { COUNTRIES, countryName } = require('./lib/countries-data');
 
 const app = express();
+app.set('trust proxy', true); // needed to read the real visitor IP behind Railway's proxy
 app.locals.avatarColorFor = avatarColorFor;
 app.locals.initialsFor = initialsFor;
 app.locals.companyTypeLabel = companyTypeLabel;
 app.locals.COMPANY_TYPES = COMPANY_TYPES;
 app.locals.JOB_CATEGORIES = JOB_CATEGORIES;
+app.locals.POPULAR_CATEGORIES = POPULAR_CATEGORIES;
+app.locals.CATEGORY_ICONS = CATEGORY_ICONS;
 app.locals.EMPLOYMENT_TYPES = EMPLOYMENT_TYPES;
 app.locals.countryName = countryName;
 app.locals.COUNTRIES = COUNTRIES;
@@ -24,6 +32,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser());
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 app.use(session({
@@ -38,6 +47,7 @@ app.use(session({
 }));
 
 app.use(attachUser);
+app.use(resolveCountry);
 
 app.use('/', require('./routes/auth'));
 app.use('/', require('./routes/business'));

@@ -63,6 +63,18 @@
           <textarea name="summary" rows="3"><%= cvProfile.summary || '' %></textarea>
         </div>
         <div class="field-group">
+          <label>Job Preferences</label>
+          <p style="color:var(--text-muted);font-size:12.5px;margin:-2px 0 10px">Pick the categories you're interested in — we'll recommend matching jobs on the home page.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 12px">
+            <% JOB_CATEGORIES.forEach(cat => { %>
+              <label class="checkbox-row" style="padding:4px 0">
+                <input type="checkbox" name="preferredCategories" value="<%= cat %>" <%= cvProfile.preferredCategories.includes(cat) ? 'checked' : '' %>>
+                <%= cat %>
+              </label>
+            <% }) %>
+          </div>
+        </div>
+        <div class="field-group">
           <label>CV Template</label>
           <select name="templateChoice">
             <option value="template1" <%= cvProfile.templateChoice === 'template1' ? 'selected' : '' %>>Template 1 — Classic</option>

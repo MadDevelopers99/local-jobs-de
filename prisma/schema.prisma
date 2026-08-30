@@ -96,6 +96,7 @@ model CvProfile {
   email          String?
   address        String?
   templateChoice String         @default("template1")
+  preferredCategories String[] @default([])
   updatedAt      DateTime       @updatedAt
 
   experience     CvExperience[]

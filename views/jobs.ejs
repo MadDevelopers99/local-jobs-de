@@ -21,9 +21,10 @@
       <input type="text" name="q" value="<%= filters.q %>" placeholder="Job title or keyword">
     </div>
     <div class="divider"></div>
+    <% const triggerCountry = (filters.land && filters.land !== 'ALL') ? filters.land : effectiveCountry; %>
     <button type="button" class="country-trigger" id="countryTrigger" style="color:var(--text);background:none;border:1px solid var(--border-strong);margin:0">
-      <span id="countryFlagDisplay" class="fi fi-<%= (filters.land || 'de').toLowerCase() %>"></span>
-      <span id="countryNameDisplay"><%= countryName(filters.land || 'DE') %></span>
+      <span id="countryFlagDisplay" class="fi fi-<%= triggerCountry.toLowerCase() %>"></span>
+      <span id="countryNameDisplay"><%= countryName(triggerCountry) %></span>
       <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
     <div class="divider"></div>
@@ -62,11 +63,19 @@
             </a>
           <% }) %>
         </div>
+        <div class="filter-group">
+          <h4>Location</h4>
+          <a href="/jobs.html?<%= new URLSearchParams({ ...filters, land: 'ALL' }).toString() %>"
+             class="checkbox-row" style="text-decoration:none;<%= filters.land === 'ALL' ? 'font-weight:700;color:var(--primary)' : '' %>">
+            <input type="checkbox" <%= filters.land === 'ALL' ? 'checked' : '' %> onclick="return false" style="pointer-events:none">
+            🌐 All Countries
+          </a>
+        </div>
       </aside>
 
       <div>
         <div class="results-toolbar">
-          <div><strong id="resultsCount"><%= jobs.length %> job<%= jobs.length === 1 ? '' : 's' %> found</strong><span id="resultsCountry"><%= filters.land ? ' in ' + countryName(filters.land) : '' %></span></div>
+          <div><strong id="resultsCount"><%= jobs.length %> job<%= jobs.length === 1 ? '' : 's' %> found</strong><span id="resultsCountry"><%= (filters.land && filters.land !== 'ALL') ? ' in ' + countryName(filters.land) : '' %></span></div>
           <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
             <form method="get" action="/jobs.html" id="sortForm">
               <% Object.entries(filters).forEach(([k, v]) => { if (k !== 'sort' && v) { %><input type="hidden" name="<%= k %>" value="<%= v %>"><% } }) %>
@@ -115,9 +124,10 @@
   ljCreateMap('jobs-map', { center: [48.1351, 11.5820], zoom: 6, markers: [] });
 
   ljInitCountrySelector({
-    defaultCode: '<%= filters.land || "DE" %>',
+    defaultCode: '<%= triggerCountry %>',
     onSelect: function (country) {
       document.getElementById('countryCodeInput').value = country.code;
+      document.querySelector('.search-bar-compact').submit();
     },
   });
 

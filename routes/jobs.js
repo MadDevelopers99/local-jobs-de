@@ -1,30 +1,68 @@
 const express = require('express');
 const prisma = require('../lib/db');
 const { requireLogin } = require('../middleware/auth');
-const { JOB_CATEGORIES, COMPANY_TYPES, companyTypeLabel } = require('../lib/constants');
+const { JOB_CATEGORIES, POPULAR_CATEGORIES, COMPANY_TYPES, companyTypeLabel } = require('../lib/constants');
+const { countryName } = require('../lib/countries-data');
 const { isCvComplete, snapshotCv } = require('../lib/cv');
 
 const router = express.Router();
 
 // ---------- home page ----------
 router.get(['/', '/index.html'], async (req, res) => {
-  const [categoryCounts, recentJobs, totalJobs, totalCompanies] = await Promise.all([
+  const country = req.effectiveCountry;
+
+  const [categoryCounts, jobsInCountry, totalJobs, totalCompanies] = await Promise.all([
     Promise.all(JOB_CATEGORIES.map(async (cat) => ({
       name: cat,
       count: await prisma.job.count({ where: { category: cat } }),
     }))),
-    prisma.job.findMany({ orderBy: { createdAt: 'desc' }, take: 4, include: { company: true } }),
+    prisma.job.findMany({
+      where: { country }, orderBy: { createdAt: 'desc' }, take: 4,
+      include: { company: true, _count: { select: { applications: true } } },
+    }),
     prisma.job.count(),
     prisma.company.count(),
   ]);
 
-  res.render('index', { active: 'home', categoryCounts, recentJobs, totalJobs, totalCompanies, JOB_CATEGORIES });
+  // fall back to global latest jobs if this country has none yet, so the
+  // homepage is never an empty "Latest Jobs" section for a new market
+  const recentJobs = jobsInCountry.length > 0 ? jobsInCountry : await prisma.job.findMany({
+    orderBy: { createdAt: 'desc' }, take: 4, include: { company: true, _count: { select: { applications: true } } },
+  });
+
+  let recommendedJobs = [];
+  if (req.currentUser) {
+    const cvProfile = await prisma.cvProfile.findUnique({ where: { userId: req.currentUser.id } });
+    if (cvProfile?.preferredCategories?.length) {
+      const recommendedInclude = { company: true, _count: { select: { applications: true } } };
+      recommendedJobs = await prisma.job.findMany({
+        where: { category: { in: cvProfile.preferredCategories }, country },
+        orderBy: { createdAt: 'desc' }, take: 4, include: recommendedInclude,
+      });
+      // widen to any country if there's nothing matching close to home yet
+      if (recommendedJobs.length === 0) {
+        recommendedJobs = await prisma.job.findMany({
+          where: { category: { in: cvProfile.preferredCategories } },
+          orderBy: { createdAt: 'desc' }, take: 4, include: recommendedInclude,
+        });
+      }
+    }
+  }
+
+  res.render('index', {
+    active: 'home', categoryCounts, recentJobs, recommendedJobs, totalJobs, totalCompanies,
+    JOB_CATEGORIES, POPULAR_CATEGORIES,
+    country: { code: country, name: countryName(country) },
+  });
 });
 
 // ---------- job search / listing ----------
 router.get('/jobs.html', async (req, res) => {
-  const { q, land, kat, category, type, sort } = req.query;
+  const { q, kat, category, type, sort } = req.query;
   const cat = category || kat; // category-card links use ?kat=, the compact search bar uses ?category=
+  // no ?land= at all means "first arrival" -> use the detected/saved country;
+  // land=ALL is the explicit "show every country" choice from the selector
+  const land = 'land' in req.query ? req.query.land : req.effectiveCountry;
 
   const where = {};
   if (q) {
@@ -33,7 +71,7 @@ router.get('/jobs.html', async (req, res) => {
       { company: { is: { name: { contains: q, mode: 'insensitive' } } } },
     ];
   }
-  if (land) where.country = land;
+  if (land && land !== 'ALL') where.country = land;
   if (cat) where.category = { equals: cat, mode: 'insensitive' };
   if (type) where.company = { ...(where.company || {}), is: { ...(where.company?.is || {}), companyType: type } };
 
@@ -47,6 +85,7 @@ router.get('/jobs.html', async (req, res) => {
 
   res.render('jobs', {
     active: 'jobs', jobs, JOB_CATEGORIES, COMPANY_TYPES, companyTypeLabel,
+    effectiveCountry: req.effectiveCountry,
     filters: { q: q || '', land: land || '', category: cat || '', type: type || '', sort: sort || '' },
   });
 });

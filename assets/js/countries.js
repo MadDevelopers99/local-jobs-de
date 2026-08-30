@@ -79,7 +79,10 @@ function ljInitCountrySelector({
   const nameDisplay = document.getElementById(nameDisplayId);
   if (!modal || !listEl) return;
 
-  let selectedCode = localStorage.getItem('lj_country_code') || defaultCode;
+  // defaultCode reflects what the server already resolved (lj_country cookie,
+  // or an IP-based guess on a brand-new visit) — trust it over any stale
+  // localStorage value from before cookie-based persistence existed.
+  let selectedCode = defaultCode;
 
   function renderList(filterText) {
     const q = (filterText || '').trim().toLowerCase();
@@ -112,6 +115,9 @@ function ljInitCountrySelector({
     selectedCode = code;
     localStorage.setItem('lj_country_code', code);
     localStorage.setItem('lj_country_name', name);
+    // 1 year, readable by server-side routes too so search results and the
+    // homepage stay in sync with what was picked here
+    document.cookie = 'lj_country=' + code + ';path=/;max-age=' + (60 * 60 * 24 * 365) + ';samesite=lax';
     updateDisplay();
     modal.classList.remove('open');
     if (typeof onSelect === 'function') onSelect({ code, name });

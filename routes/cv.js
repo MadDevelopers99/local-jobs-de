@@ -2,6 +2,7 @@ const express = require('express');
 const prisma = require('../lib/db');
 const { requireLogin } = require('../middleware/auth');
 const { isCvComplete, normalizeCv } = require('../lib/cv');
+const { JOB_CATEGORIES } = require('../lib/constants');
 
 const router = express.Router();
 
@@ -24,17 +25,22 @@ async function getOrCreateCvProfile(userId) {
 router.get('/cv-builder.html', requireLogin, async (req, res) => {
   const cvProfile = await getOrCreateCvProfile(req.currentUser.id);
   res.render('cv/builder', {
-    active: 'cv', cvProfile, complete: isCvComplete(cvProfile),
+    active: 'cv', cvProfile, complete: isCvComplete(cvProfile), JOB_CATEGORIES,
     returnToApply: req.query.returnToApply || null, saved: req.query.saved === '1',
   });
 });
 
 router.post('/cv-builder.html/profile', requireLogin, async (req, res) => {
   const { fullName, headline, summary, phone, email, address, templateChoice, returnToApply } = req.body;
+  // checkboxes: 0 checked -> field absent, 1 -> string, 2+ -> array
+  const preferredCategories = [].concat(req.body.preferredCategories || []).filter((c) => JOB_CATEGORIES.includes(c));
   const profile = await getOrCreateCvProfile(req.currentUser.id);
   await prisma.cvProfile.update({
     where: { id: profile.id },
-    data: { fullName, headline, summary, phone, email, address, templateChoice: templateChoice || 'template1' },
+    data: {
+      fullName, headline, summary, phone, email, address,
+      templateChoice: templateChoice || 'template1', preferredCategories,
+    },
   });
   res.redirect('/cv-builder.html' + (returnToApply ? '?returnToApply=' + returnToApply : '?saved=1'));
 });

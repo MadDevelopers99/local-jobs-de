@@ -16,15 +16,15 @@
 <section class="hero" style="background:#0f3d2e">
   <div class="hero-media"><img src="/assets/img/hero-munich.svg" alt="" style="width:100%;height:100%;object-fit:cover"></div>
   <div class="container hero-inner">
-    <h1>Find Your Job<br>in <span id="heroCountryName">Germany</span></h1>
+    <h1>Find Your Job<br>in <span id="heroCountryName"><%= country.name %></span></h1>
     <p>Over <%= totalJobs %> jobs from <%= totalCompanies %> companies</p>
     <button type="button" class="country-trigger" id="countryTrigger">
-      <span id="countryFlagDisplay" class="fi fi-de"></span>
-      <span id="countryNameDisplay">Germany</span>
+      <span id="countryFlagDisplay" class="fi fi-<%= country.code.toLowerCase() %>"></span>
+      <span id="countryNameDisplay"><%= country.name %></span>
       <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
     <form class="search-bar" action="/jobs.html" method="get">
-      <input type="hidden" name="land" id="countryCodeInput" value="DE">
+      <input type="hidden" name="land" id="countryCodeInput" value="<%= country.code %>">
       <div class="field">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="text" name="q" placeholder="Job title or keyword">
@@ -32,7 +32,7 @@
       <div class="divider"></div>
       <div class="field">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        <input type="text" name="ort" id="ortInput" value="Munich, Germany">
+        <input type="text" name="ort" id="ortInput" value="<%= country.code === 'DE' ? 'Munich, Germany' : country.name %>">
       </div>
       <div class="divider"></div>
       <div class="field" style="max-width:170px">
@@ -55,18 +55,11 @@
 
 <div class="container">
   <div class="category-grid">
-    <% const icons = {
-      'Food & Hospitality': '<path d="M3 2v7a4 4 0 0 0 4 4v9"/><path d="M7 2v7"/><path d="M11 2v7"/><path d="M17 2c-2 2-2 5-2 8 0 3 2 4 2 4v9"/>',
-      'Retail & Sales': '<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>',
-      'Warehouse & Logistics': '<path d="M21 8 12 3 3 8l9 5 9-5z"/><path d="M3 8v10l9 5 9-5V8"/><path d="M12 13v10"/>',
-      'Office & Admin': '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M8 4v5"/>',
-      'Skilled Trades': '<path d="M14.7 6.3a4 4 0 1 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-3-3z"/>',
-      'Cleaning': '<path d="M4 22h16"/><path d="M12 2v13"/><path d="M8 8l4-4 4 4"/><circle cx="12" cy="18" r="3"/>',
-    }; %>
-    <% categoryCounts.forEach(cat => { %>
-      <a class="category-card" href="/jobs.html?kat=<%= encodeURIComponent(cat.name) %>">
-        <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><%- icons[cat.name] || '' %></svg></div>
-        <strong><%= cat.name %></strong><small><%= cat.count %> job<%= cat.count === 1 ? '' : 's' %></small>
+    <% POPULAR_CATEGORIES.forEach(pc => {
+      const cat = categoryCounts.find(c => c.name === pc.name); %>
+      <a class="category-card" href="/jobs.html?kat=<%= encodeURIComponent(pc.name) %>">
+        <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><%- pc.icon %></svg></div>
+        <strong><%= pc.name %></strong><small><%= cat.count %> job<%= cat.count === 1 ? '' : 's' %></small>
       </a>
     <% }) %>
     <a class="category-card" href="/jobs.html">
@@ -75,6 +68,22 @@
     </a>
   </div>
 </div>
+
+<% if (recommendedJobs.length > 0) { %>
+  <section class="section" style="padding-bottom:0">
+    <div class="container">
+      <div class="section-head">
+        <h2>Recommended for You</h2>
+        <a href="/cv-builder.html">Edit preferences →</a>
+      </div>
+      <div class="job-grid">
+        <% recommendedJobs.forEach(job => { %>
+          <%- include('partials/job-card', { job }) %>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+<% } %>
 
 <section class="section">
   <div class="container">
@@ -133,19 +142,15 @@
     ],
   });
 
-  function updateHeroCountry(name) {
-    const el = document.getElementById('heroCountryName');
-    if (el) el.textContent = name;
-  }
-  updateHeroCountry(localStorage.getItem('lj_country_name') || 'Germany');
-
   ljInitCountrySelector({
-    defaultCode: 'DE',
+    defaultCode: '<%= country.code %>',
     onSelect: function (country) {
       document.getElementById('countryCodeInput').value = country.code;
       const ortInput = document.getElementById('ortInput');
       if (ortInput) ortInput.value = country.code === 'DE' ? 'Munich, Germany' : country.name;
-      updateHeroCountry(country.name);
+      const heroEl = document.getElementById('heroCountryName');
+      if (heroEl) heroEl.textContent = country.name;
+      window.location.reload();
     },
   });
 </script>
